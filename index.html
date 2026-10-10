@@ -1,0 +1,1347 @@
+<!doctype html>
+<html lang="pt-PT">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Girls go to the Museum</title>
+<meta name="description" content="Demonstração da página do grupo para as visitas aos museus da Grande Lisboa.">
+<meta name="robots" content="noindex">
+<meta property="og:title" content="Girls go to the Museum">
+<meta property="og:description" content="Demonstração: sugestões, votação e diário das visitas aos museus da Grande Lisboa.">
+<meta property="og:type" content="website">
+<style>:root{color-scheme:light}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600..800;1,600..800&family=Hanken+Grotesk:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: one reading column. The next visit is an admission ticket (date stub + details);
+   preparation, photographs and comments hang below it as plain ruled sections. */
+:root{
+  --bg:#FAF7F4; --surface:#FFFFFF; --surface-2:#F0EAE5; --ink:#33172B; --ink-2:#74626C; --line:#E5DBD5;
+  --rosa:#B5175A; --on-rosa:#FFFFFF; --rosa-soft:#FBE6EE; --trim:#F2BFD3;
+  --stub:#E9D2A8; --on-stub:#3A1B10; --ouro:#B5852B; --sand:#F4ECE2; --band:#E4D3C0;
+  --danger:#B3261E; --scrim:rgba(30,14,24,.6);
+  --shadow:0 1px 2px rgba(51,23,43,.06),0 10px 28px rgba(51,23,43,.08);
+  --display:"Playfair Display","Didot","Bodoni MT",Georgia,serif;
+  --body:"Hanken Grotesk",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#17131A; --surface:#221C25; --surface-2:#2E2632; --ink:#F3ECF1; --ink-2:#B9AAB5; --line:#403544;
+    --rosa:#FF8DB6; --on-rosa:#2A0A1A; --rosa-soft:#44203A; --trim:#8C4A68;
+    --stub:#D8BE8C; --on-stub:#2E1A10; --ouro:#E2B866; --sand:#2D2529; --band:#4A3D3C;
+    --danger:#FF9A8F; --scrim:rgba(8,5,9,.76);
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 28px rgba(0,0,0,.35);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+    --bg:#17131A; --surface:#221C25; --surface-2:#2E2632; --ink:#F3ECF1; --ink-2:#B9AAB5; --line:#403544;
+    --rosa:#FF8DB6; --on-rosa:#2A0A1A; --rosa-soft:#44203A; --trim:#8C4A68;
+    --stub:#D8BE8C; --on-stub:#2E1A10; --ouro:#E2B866; --sand:#2D2529; --band:#4A3D3C;
+    --danger:#FF9A8F; --scrim:rgba(8,5,9,.76);
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 28px rgba(0,0,0,.35);
+    color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.5}
+button,input,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--rosa);outline-offset:2px}
+a{color:var(--rosa)}
+h1,h2,h3,p,ul{margin:0}
+ul{padding:0;list-style:none}
+
+.demo-bar{background:var(--ink);color:var(--bg);text-align:center;font-size:14px;font-weight:600;padding:8px 16px}
+.wrap{max-width:920px;margin-inline:auto;padding-inline:clamp(16px,4vw,32px);padding-block:20px 72px;display:flex;flex-direction:column;gap:20px}
+
+/* header */
+.top{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 20px}
+.brand{display:flex;align-items:center;gap:12px;min-width:0}
+.brand-mark{flex:none;width:36px;height:36px;border-radius:50%;background:var(--rosa);color:var(--on-rosa);display:grid;place-items:center;font-size:17px;line-height:1}
+.brand-text{display:flex;flex-direction:column;min-width:0}
+.brand-name{font-family:var(--display);font-style:italic;font-weight:700;font-size:25px;line-height:1.1;letter-spacing:-.01em}
+.brand-sub{font-size:13px;color:var(--ink-2)}
+.top-tools{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:999px;overflow:hidden;background:var(--surface)}
+.seg button{border:0;background:transparent;padding:6px 12px;font-size:13px;font-weight:600;color:var(--ink-2);cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.me{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:6px 14px;font-size:14px;font-weight:600;cursor:pointer;max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+.tabs{display:flex;gap:4px;flex-wrap:wrap}
+.tabs button{border:0;background:transparent;padding:8px 14px;border-radius:999px;font-weight:600;color:var(--ink-2);cursor:pointer}
+.tabs button:hover{color:var(--ink)}
+.tabs button[aria-current="page"]{background:var(--rosa-soft);color:var(--rosa)}
+.azulejo{height:13px;border-top:2px solid var(--trim);background:radial-gradient(circle at 11px 0,var(--trim) 0 10px,transparent 10.6px);background-size:22px 13px}
+
+/* notices */
+.notice{background:var(--rosa-soft);border-radius:10px;padding:12px 16px;display:flex;flex-wrap:wrap;gap:10px 14px;align-items:center;font-size:15px}
+.notice p{flex:1 1 240px;min-width:0}
+.notice form{display:flex;gap:8px;flex:1 1 260px;min-width:0}
+
+/* buttons and fields */
+.btn{border:1px solid var(--rosa);background:var(--rosa);color:var(--on-rosa);border-radius:999px;padding:9px 18px;font-weight:600;cursor:pointer;white-space:nowrap}
+.btn:hover{filter:brightness(1.08)}
+.btn.ghost{background:transparent;color:var(--rosa);border-color:var(--line)}
+.btn.small{padding:6px 12px;font-size:14px}
+.btn[disabled]{opacity:.55;cursor:default}
+.textbtn{border:0;background:transparent;color:var(--ink-2);font-size:13px;font-weight:600;cursor:pointer;padding:2px 4px;border-radius:4px}
+.textbtn:hover{color:var(--ink)}
+.textbtn.armed,.btn.armed{color:var(--danger);border-color:var(--danger)}
+.btn.ghost.danger{color:var(--danger)}
+input[type=text],input[type=url],input[type=date],input[type=time],textarea{width:100%;min-width:0;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:9px 12px}
+textarea{resize:vertical;min-height:76px}
+::placeholder{color:var(--ink-2);opacity:.8}
+.row-form{display:flex;gap:8px;align-items:flex-start}
+.row-form input{flex:1}
+
+/* ticket */
+.ticket{display:grid;grid-template-columns:auto minmax(0,1fr);background:var(--surface);border:1px solid var(--line);border-radius:22px;overflow:hidden;box-shadow:var(--shadow)}
+.stub{position:relative;background:var(--stub);color:var(--on-stub);padding:22px 24px;min-width:148px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.stub::before,.stub::after{content:"";position:absolute;right:-10px;width:20px;height:20px;border-radius:50%;background:var(--bg)}
+.stub::before{top:-11px}.stub::after{bottom:-11px}
+.stub-wd{font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+.stub-day{font-family:var(--display);font-weight:700;font-size:76px;line-height:.95;font-variant-numeric:lining-nums}
+.stub-mo{font-size:14px;font-weight:600}
+.stub-time{margin-top:10px;font-weight:700;font-size:18px;font-variant-numeric:tabular-nums;border-top:1px solid currentColor;padding-top:8px;align-self:stretch}
+.ticket-body{border-left:2px dashed var(--line);padding:22px 24px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.eyebrow{font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--rosa)}
+.ticket h1{font-family:var(--display);font-weight:700;font-size:clamp(28px,5vw,42px);line-height:1.08;letter-spacing:-.015em;text-wrap:balance;overflow-wrap:anywhere}
+.ticket-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.facts{display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 14px;font-size:15px}
+.facts dt{color:var(--ink-2);font-weight:600}
+.facts dd{margin:0;overflow-wrap:anywhere;white-space:pre-wrap}
+.links{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:15px;font-weight:600}
+.rsvp{border-top:1px solid var(--line);padding-top:14px;display:flex;flex-direction:column;gap:12px}
+.rsvp-q{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px}
+.rsvp-q span{font-weight:600}
+.choice{display:inline-flex;flex-wrap:wrap;gap:6px}
+.choice button{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:7px 14px;font-weight:600;cursor:pointer}
+.choice button[aria-pressed="true"]{background:var(--rosa);border-color:var(--rosa);color:var(--on-rosa)}
+.who{display:flex;flex-direction:column;gap:6px;font-size:14px}
+.who-line{display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px}
+.who-label{color:var(--ink-2);font-weight:600;min-width:74px}
+.chip{display:inline-flex;align-items:center;gap:6px;background:var(--surface-2);border-radius:999px;padding:2px 10px 2px 3px;font-weight:600}
+.chip.muted{color:var(--ink-2);font-weight:500}
+.av{--c:var(--rosa);flex:none;display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;border:2px solid var(--c);background:var(--surface);font-size:10px;font-weight:700;letter-spacing:.02em}
+.ticket.blank .stub-day{font-size:56px}
+.ticket.blank .ticket-body{justify-content:center}
+.ticket.blank h1{font-size:clamp(24px,4vw,32px)}
+.ticket.blank p{color:var(--ink-2);max-width:56ch}
+.ticket-actions{display:flex;flex-wrap:wrap;gap:8px}
+
+/* sections */
+.detail{display:flex;flex-direction:column;gap:28px}
+.back{align-self:flex-start;border:0;background:transparent;color:var(--rosa);font-weight:600;cursor:pointer;padding:0}
+.sec{border-top:1px solid var(--line);padding-top:20px;display:flex;flex-direction:column;gap:12px}
+.sec.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:24px 36px}
+.col{display:flex;flex-direction:column;gap:10px;min-width:0}
+.sec h2{font-size:19px;font-weight:700;letter-spacing:-.005em}
+.sec-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px 12px}
+.hint{font-size:14px;color:var(--ink-2);max-width:65ch}
+.empty{font-size:14px;color:var(--ink-2);font-style:italic}
+
+.tasks,.notes,.comments{display:flex;flex-direction:column;gap:8px}
+.task{display:flex;align-items:flex-start;gap:10px}
+.task label{display:flex;align-items:flex-start;gap:10px;flex:1;min-width:0;cursor:pointer}
+.task input{width:18px;height:18px;margin-top:3px;flex:none;accent-color:var(--rosa)}
+.task .txt{overflow-wrap:anywhere}
+.task.done .txt{text-decoration:line-through;color:var(--ink-2)}
+.by{font-size:13px;color:var(--ink-2)}
+.quick{display:flex;flex-wrap:wrap;gap:6px}
+.quick button{border:1px dashed var(--line);background:transparent;border-radius:999px;padding:4px 12px;font-size:14px;color:var(--ink-2);cursor:pointer}
+.quick button:hover{color:var(--ink);border-style:solid}
+.note{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px 14px;display:flex;flex-direction:column;gap:4px}
+.note .txt,.comment .txt{white-space:pre-wrap;overflow-wrap:anywhere}
+.meta{display:flex;flex-wrap:wrap;align-items:center;gap:4px 10px;font-size:13px;color:var(--ink-2)}
+.meta strong{color:var(--ink);font-size:14px}
+.comment{display:grid;grid-template-columns:auto minmax(0,1fr);gap:10px}
+.comment .av{width:32px;height:32px;font-size:12px;margin-top:2px}
+.composer{display:flex;flex-direction:column;gap:8px;align-items:flex-end}
+
+.photos{display:grid;grid-template-columns:repeat(auto-fill,minmax(132px,1fr));gap:8px}
+.photo{border:0;padding:0;background:var(--surface-2);border-radius:8px;overflow:hidden;aspect-ratio:1;cursor:zoom-in;max-width:100%}
+.photo img{width:100%;height:100%;object-fit:cover;display:block}
+.photos .empty{grid-column:1/-1}
+
+/* lists */
+.list{display:flex;flex-direction:column;gap:8px}
+.vrow{display:grid;grid-template-columns:64px minmax(0,1fr) auto;gap:14px;align-items:center;text-align:left;width:100%;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:8px 14px 8px 8px;cursor:pointer}
+.vrow:hover{border-color:var(--rosa)}
+.thumb{width:64px;height:64px;border-radius:6px;object-fit:cover;display:block;background-color:var(--surface-2)}
+.thumb.none{background-image:radial-gradient(circle,var(--stub) 0 3px,transparent 3.6px);background-size:14px 14px}
+.vrow-name{font-family:var(--display);font-weight:700;font-size:20px;line-height:1.2;overflow-wrap:anywhere}
+.vrow-date{font-size:14px;color:var(--ink-2);font-variant-numeric:tabular-nums}
+.vrow-go{color:var(--rosa);font-weight:700}
+.page-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:10px}
+.page-head h1{font-family:var(--display);font-size:30px;font-weight:700;line-height:1.1}
+.group{display:flex;flex-direction:column;gap:10px}
+.group h2{font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2)}
+.idea{display:grid;grid-template-columns:auto minmax(0,1fr);gap:14px;align-items:start;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.vote{display:flex;flex-direction:column;align-items:center;min-width:56px;border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:6px 8px;cursor:pointer;font-weight:700}
+.vote small{font-size:11px;font-weight:600;color:var(--ink-2)}
+.vote[aria-pressed="true"]{background:var(--rosa);border-color:var(--rosa);color:var(--on-rosa)}
+.vote[aria-pressed="true"] small{color:inherit}
+.vote[disabled]{cursor:default}
+.idea-main{display:flex;flex-direction:column;gap:4px;min-width:0}
+.idea.solo{grid-template-columns:minmax(0,1fr)}
+.tag.wait{color:var(--ink-2);background:var(--surface-2)}
+.admins{display:flex;flex-direction:column;gap:8px}
+.sug-status{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px}
+.idea-form{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:8px}
+
+#main{display:flex;flex-direction:column;gap:28px}
+#sugs{display:flex;flex-direction:column;gap:28px}
+#sugs:empty{display:none}
+/* vote */
+.poll{background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:18px;display:flex;flex-direction:column;gap:16px;box-shadow:var(--shadow)}
+.poll-rows{display:flex;flex-direction:column;gap:14px}
+.poll-row{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:14px;align-items:center}
+.poll-row .heart{min-width:150px}
+.poll-main{display:flex;flex-direction:column;gap:5px;min-width:0}
+.poll-name{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 8px;font-weight:700;overflow-wrap:anywhere}
+.tag{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--rosa);background:var(--rosa-soft);border-radius:999px;padding:1px 8px}
+.bar{height:8px;background:var(--surface-2);border-radius:4px;overflow:hidden}
+.bar-fill{display:block;height:100%;background:var(--rosa);border-radius:0 4px 4px 0}
+.poll-n{font-family:var(--display);font-weight:700;font-size:26px;line-height:1;font-variant-numeric:tabular-nums lining-nums;min-width:1.2em;text-align:right}
+.poll-foot{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px;border-top:1px solid var(--line);padding-top:12px}
+@media (max-width:520px){.poll-row{grid-template-columns:minmax(0,1fr) auto}.poll-row .heart{grid-column:1/-1;justify-self:start;order:3}}
+/* suggestions */
+.sugs{display:flex;flex-direction:column;gap:16px}
+.sugs-head{display:flex;flex-direction:column;gap:4px}
+.sugs-head h2{font-family:var(--display);font-style:italic;font-size:28px;font-weight:700;line-height:1.15;text-wrap:balance}
+.sug-grid{display:flex;flex-direction:column;gap:16px}
+.sug{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:22px;background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:16px;box-shadow:var(--shadow)}
+.sug-pics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;align-content:start}
+.pic{margin:0;display:flex;flex-direction:column;gap:6px;min-width:0}
+.pic svg{display:block;width:100%;height:auto;border-radius:14px}
+.pic img{display:block;width:100%;aspect-ratio:1;object-fit:cover;border-radius:14px}
+.slots{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.slot{display:flex;flex-direction:column;gap:6px;min-width:0}
+.slot .pic{gap:0}
+.slot input{font-size:13px;padding:6px 8px}
+.slot-btns{display:flex;flex-wrap:wrap;gap:2px 8px}
+.pic figcaption{font-size:12px;line-height:1.3;color:var(--ink-2);overflow-wrap:anywhere}
+.sug-body{display:flex;flex-direction:column;gap:10px;min-width:0}
+.sug h3{font-family:var(--display);font-size:24px;font-weight:700;line-height:1.15;overflow-wrap:anywhere}
+.sug-desc{max-width:62ch}
+.sug-actions{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:2px}
+.heart{border:1px solid var(--rosa);background:transparent;color:var(--rosa);border-radius:999px;padding:8px 16px;font-weight:700;cursor:pointer}
+.heart[aria-pressed="true"]{background:var(--rosa);color:var(--on-rosa)}
+.heart[disabled]{cursor:default;opacity:.7}
+.p-bg{fill:var(--sand)}.p-a{fill:var(--rosa)}.p-b{fill:var(--band)}.p-g{fill:var(--ouro)}.p-k{fill:var(--ink)}.p-w{fill:var(--surface)}
+.p-l{fill:none;stroke:var(--ink);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.p-la{fill:none;stroke:var(--rosa);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.p-lw{fill:none;stroke:var(--surface);stroke-width:2.4;stroke-linecap:round;stroke-dasharray:.5 5.5}
+@media (max-width:760px){.sug{grid-template-columns:minmax(0,1fr)}}
+
+/* dialogs */
+dialog{border:1px solid var(--line);border-radius:14px;background:var(--surface);color:var(--ink);padding:0;width:min(560px,calc(100vw - 32px));max-height:calc(100vh - 32px)}
+dialog::backdrop{background:var(--scrim)}
+.dlg form{display:flex;flex-direction:column;gap:14px;padding:22px}
+.dlg h2{font-family:var(--display);font-size:26px;font-weight:700;line-height:1.1}
+.field{display:flex;flex-direction:column;gap:4px}
+.field label{font-size:14px;font-weight:600}
+.field small{font-size:13px;color:var(--ink-2)}
+.pair{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,150px),1fr));gap:12px}
+.dlg-actions{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;margin-top:4px}
+.dlg-actions div{display:flex;gap:8px;margin-left:auto}
+#lightbox{width:min(980px,calc(100vw - 24px));background:var(--surface)}
+.lb{display:flex;flex-direction:column}
+.lb img{display:block;max-width:100%;max-height:72vh;margin:auto;object-fit:contain}
+.lb-stage{background:var(--surface-2);display:grid;place-items:center;min-height:200px}
+.lb-bar{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px;padding:10px 14px}
+.lb-bar div{display:flex;gap:6px;align-items:center}
+
+#toast{position:fixed;left:50%;transform:translateX(-50%);bottom:0;margin-bottom:calc(20px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--bg);padding:10px 18px;border-radius:999px;font-weight:600;font-size:14px;max-width:calc(100vw - 32px);box-shadow:var(--shadow);z-index:20}
+
+@media (max-width:620px){
+  .ticket{grid-template-columns:minmax(0,1fr)}
+  .stub{flex-direction:row;flex-wrap:wrap;align-items:baseline;justify-content:flex-start;gap:4px 10px;padding:14px 18px;text-align:left}
+  .stub::before,.stub::after{top:auto;bottom:-10px}
+  .stub::before{left:-10px;right:auto}.stub::after{right:-10px}
+  .stub-day{font-size:44px}
+  .stub-time{margin:0 0 0 auto;border:0;padding:0;align-self:auto}
+  .ticket-body{border-left:0;border-top:2px dashed var(--line);padding:18px}
+  .ticket.blank .stub-day{font-size:36px}
+  .tabs button{padding:8px 10px;font-size:15px}
+}
+@media (prefers-reduced-motion:no-preference){
+  .btn,.vrow,.choice button,.vote{transition:filter .15s,border-color .15s,background-color .15s}
+}
+</style>
+
+<div class="demo-bar" data-i="demo">Demonstração: podes experimentar tudo. Nada fica guardado e mais ninguém vê.</div>
+<div class="wrap">
+  <header class="top">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true">♥</span>
+      <span class="brand-text">
+        <span class="brand-name" data-i="brand">Girls go to the Museum</span>
+        <span class="brand-sub" data-i="brand_sub">Grande Lisboa, de duas em duas semanas</span>
+      </span>
+    </div>
+    <div class="top-tools">
+      <button class="me" id="me-btn" type="button" hidden></button>
+      <div class="seg" role="group" aria-label="Língua / Language">
+        <button type="button" id="lang-pt" aria-pressed="true">PT</button>
+        <button type="button" id="lang-en" aria-pressed="false">EN</button>
+      </div>
+    </div>
+  </header>
+  <nav class="tabs" id="tabs" aria-label="Secções">
+    <button type="button" data-view="next" data-i="tab_next">Próxima visita</button>
+    <button type="button" data-view="visits" data-i="tab_visits">Todas as visitas</button>
+  </nav>
+  <div class="azulejo" aria-hidden="true"></div>
+  <div id="notice" hidden></div>
+  <main id="main"></main>
+  <div id="admin" hidden></div>
+</div>
+
+<dialog id="visit-dlg" class="dlg">
+  <form id="visit-form">
+    <h2 id="visit-dlg-title">Marcar visita</h2>
+    <div class="field">
+      <label for="f-museum" data-i="f_museum">Museu</label>
+      <input type="text" id="f-museum" list="museus" required maxlength="120" autocomplete="off">
+    </div>
+    <div class="pair">
+      <div class="field"><label for="f-date" data-i="f_date">Data</label><input type="date" id="f-date" required></div>
+      <div class="field"><label for="f-time" data-i="f_time">Hora</label><input type="time" id="f-time"></div>
+    </div>
+    <div class="field">
+      <label for="f-meet" data-i="f_meet">Ponto de encontro</label>
+      <input type="text" id="f-meet" maxlength="200">
+    </div>
+    <div class="field">
+      <label for="f-url" data-i="f_url">Site do museu ou da exposição</label>
+      <input type="text" id="f-url" inputmode="url" maxlength="400" placeholder="https://">
+    </div>
+    <div class="field">
+      <label for="f-notes" data-i="f_notes">O que vamos ver</label>
+      <textarea id="f-notes" maxlength="2000"></textarea>
+    </div>
+    <div class="dlg-actions">
+      <span id="visit-delete-slot"></span>
+      <div>
+        <button type="button" class="btn ghost" id="visit-cancel" data-i="cancel">Cancelar</button>
+        <button type="submit" class="btn" id="visit-save" data-i="save">Guardar</button>
+      </div>
+    </div>
+  </form>
+</dialog>
+
+<dialog id="opt-dlg" class="dlg">
+  <form id="opt-form">
+    <h2 id="opt-dlg-title">Nova opção</h2>
+    <div class="field"><label for="o-name" data-i="f_museum">Museu</label><input type="text" id="o-name" list="museus" required maxlength="120" autocomplete="off"></div>
+    <div class="field"><label for="o-tag" data-i="o_tag">Frase curta</label><input type="text" id="o-tag" maxlength="60"></div>
+    <div class="field"><label for="o-desc" data-i="o_desc">Descrição</label><textarea id="o-desc" maxlength="700"></textarea></div>
+    <div class="field"><label for="o-addr" data-i="o_addr">Onde (morada)</label><input type="text" id="o-addr" maxlength="200"></div>
+    <div class="field"><label for="o-when" data-i="o_when">Quando (horário)</label><input type="text" id="o-when" maxlength="200"></div>
+    <div class="field"><label for="o-url" data-i="o_url">Site</label><input type="text" id="o-url" inputmode="url" maxlength="400" placeholder="https://"></div>
+    <div class="field"><span class="by" data-i="o_pics">Fotografias (até três)</span><div class="slots" id="o-pics"></div></div>
+    <div class="dlg-actions"><div>
+      <button type="button" class="btn ghost" id="opt-cancel" data-i="cancel">Cancelar</button>
+      <button type="submit" class="btn" id="opt-save" data-i="save">Guardar</button>
+    </div></div>
+  </form>
+</dialog>
+<input type="file" id="o-file" accept="image/*" hidden>
+
+<dialog id="name-dlg" class="dlg">
+  <form id="name-form">
+    <h2 data-i="name_h">O teu nome</h2>
+    <div class="field">
+      <label for="f-nick" data-i="name_l">Como aparece para o grupo</label>
+      <input type="text" id="f-nick" maxlength="40" required autocomplete="off">
+    </div>
+    <div class="dlg-actions"><div>
+      <button type="button" class="btn ghost" id="name-cancel" data-i="cancel">Cancelar</button>
+      <button type="submit" class="btn" data-i="save">Guardar</button>
+    </div></div>
+  </form>
+</dialog>
+
+<dialog id="lightbox"><div class="lb" id="lb"></div></dialog>
+<div id="toast" role="status" aria-live="polite" hidden></div>
+<input type="file" id="photo-input" accept="image/*" multiple hidden>
+
+<datalist id="museus">
+  <option value="Museu Calouste Gulbenkian"></option>
+  <option value="Centro de Arte Moderna Gulbenkian (CAM)"></option>
+  <option value="Museu Nacional de Arte Antiga"></option>
+  <option value="Museu Nacional do Azulejo"></option>
+  <option value="Museu Nacional dos Coches"></option>
+  <option value="MAAT – Museu de Arte, Arquitetura e Tecnologia"></option>
+  <option value="MAC/CCB – Museu de Arte Contemporânea"></option>
+  <option value="Museu Nacional de Arte Contemporânea do Chiado"></option>
+  <option value="Museu do Oriente"></option>
+  <option value="Museu do Fado"></option>
+  <option value="Museu de Lisboa – Palácio Pimenta"></option>
+  <option value="Museu Bordalo Pinheiro"></option>
+  <option value="Casa-Museu Medeiros e Almeida"></option>
+  <option value="Museu Arpad Szenes – Vieira da Silva"></option>
+  <option value="Museu de Artes Decorativas Portuguesas (FRESS)"></option>
+  <option value="Museu Nacional do Traje"></option>
+  <option value="Museu Nacional do Teatro e da Dança"></option>
+  <option value="Museu Nacional de Etnologia"></option>
+  <option value="Museu Nacional de História Natural e da Ciência"></option>
+  <option value="Museu de Marinha"></option>
+  <option value="Museu do Aljube – Resistência e Liberdade"></option>
+  <option value="Museu da Marioneta"></option>
+  <option value="Museu do Tesouro Real"></option>
+  <option value="Museu do Dinheiro"></option>
+  <option value="Museu da Farmácia"></option>
+  <option value="Museu da Água"></option>
+  <option value="Atelier-Museu Júlio Pomar"></option>
+  <option value="Museu de São Roque"></option>
+  <option value="Casa das Histórias Paula Rego (Cascais)"></option>
+  <option value="Museu Condes de Castro Guimarães (Cascais)"></option>
+  <option value="Farol Museu de Santa Marta (Cascais)"></option>
+  <option value="Museu do Mar Rei D. Carlos (Cascais)"></option>
+  <option value="Palácio Nacional de Sintra"></option>
+  <option value="Palácio Nacional da Pena (Sintra)"></option>
+  <option value="Palácio de Monserrate (Sintra)"></option>
+  <option value="Quinta da Regaleira (Sintra)"></option>
+  <option value="MU.SA – Museu das Artes de Sintra"></option>
+  <option value="Museu Arqueológico de São Miguel de Odrinhas (Sintra)"></option>
+  <option value="Museu do Ar (Sintra)"></option>
+  <option value="Palácio Nacional de Queluz"></option>
+  <option value="Palácio Nacional de Mafra"></option>
+  <option value="Palácio do Marquês de Pombal (Oeiras)"></option>
+  <option value="Casa da Cerca – Centro de Arte Contemporânea (Almada)"></option>
+  <option value="Museu de Cerâmica de Sacavém (Loures)"></option>
+  <option value="Museu do Neo-Realismo (Vila Franca de Xira)"></option>
+  <option value="Ecomuseu Municipal do Seixal"></option>
+</datalist>
+
+<script>
+(() => {
+"use strict";
+const T = {
+pt: {
+  brand:"Girls go to the Museum", brand_sub:"Grande Lisboa, de duas em duas semanas", demo:"Demonstração: podes experimentar tudo. Nada fica guardado e mais ninguém vê.",
+  tab_next:"Próxima visita", tab_visits:"Todas as visitas", tab_ideas:"Votação",
+  f_museum:"Museu", f_date:"Data", f_time:"Hora", f_meet:"Ponto de encontro", f_url:"Site do museu ou da exposição", f_notes:"O que vamos ver",
+  cancel:"Cancelar", save:"Guardar", add:"Adicionar", del:"Apagar", confirm:"Apagar mesmo?", edit:"Editar", close:"Fechar",
+  name_h:"O teu nome", name_l:"Como aparece para o grupo", set_name:"Definir o meu nome",
+  name_ask:"Como te devemos chamar? O nome aparece nos teus comentários, fotografias e presenças.", name_ph:"O teu nome",
+  ro:"Estás em modo de leitura. Para marcar visitas, comentar e publicar fotografias, pede a quem partilhou a página que te convide como editora ou editor.",
+  ro_toast:"Esta página está só para leitura na tua conta.",
+  signin_h:"Inicia sessão para ver as visitas", signin_p:"As visitas, os comentários e as fotografias do grupo aparecem aqui depois de abrires a página com a tua conta Claude.",
+  loading:"A carregar as visitas…",
+  none_h:"Ainda não há visita marcada", none_p:"Escolham o museu e a data. Depois, cada pessoa confirma aqui a presença, e a página fica com a preparação, os comentários e as fotografias.",
+  none_rhythm:"A última visita foi a {last}. Duas semanas depois calha a {next}.",
+  schedule:"Marcar visita", schedule_for:"Marcar para {date}", schedule_first:"Marcar a primeira visita", edit_visit:"Editar visita", del_visit:"Apagar visita",
+  ey_next:"Próxima visita", ey_planned:"Visita marcada", ey_done:"Visita realizada",
+  today:"hoje", tomorrow:"amanhã", yesterday:"ontem", in_days:"daqui a {n} dias", days_ago:"há {n} dias",
+  meet:"Encontro", seeing:"A ver", map:"Ver no mapa", site:"Site do museu",
+  rsvp_q:"Vais?", yes:"Vou", maybe:"Talvez", no:"Não posso", was_q:"Estiveste lá?", was:"Estive lá",
+  g_yes:"Vão", g_maybe:"Talvez", g_no:"Não podem", g_was:"Foram", nobody:"Ainda ninguém respondeu.",
+  checklist:"A tratar antes", checklist_hint:"Bilhetes, visita guiada, almoço. Quem tratar de uma tarefa marca-a como feita.",
+  task_ph:"Nova tarefa", no_tasks:"Nada por tratar.", q1:"Comprar bilhetes", q2:"Reservar visita guiada", q3:"Marcar mesa para o almoço", q4:"Confirmar horário do museu",
+  done_by:"feito por {name}",
+  notes:"Notas e ligações", notes_hint:"O que não perder, a exposição temporária, como chegar. Os endereços colados ficam clicáveis.",
+  note_ph:"Escreve uma nota ou cola uma ligação", no_notes:"Sem notas ainda.",
+  photos:"Fotografias", add_photos:"Juntar fotografias", no_photos:"Ainda não há fotografias desta visita.",
+  uploading:"A enviar {i} de {n}…", photo_bad:"Não foi possível ler «{name}». Experimenta em JPEG ou PNG.", photo_alt:"Fotografia de {name}",
+  prev:"Anterior", next:"Seguinte",
+  comments:"Comentários", comment_ph:"O que achaste? O que vale a pena ver?", post:"Publicar", no_comments:"Ainda sem comentários.",
+  all_visits:"Todas as visitas", upcoming:"Marcadas", journal:"Diário das visitas", no_visits:"Quando houver visitas, ficam aqui por ordem, com as fotografias e os comentários de cada uma.",
+  up_next:"A seguir", went:"{n} presenças", open:"Abrir",
+  not_found_h:"Esta visita já não existe", not_found_p:"Pode ter sido apagada. Vê a lista de todas as visitas.",
+  ideas_h:"Escolher o próximo museu", ideas_p:"Juntem outros museus. Cada um entra logo na votação.",
+  idea_ph:"Nome do museu", idea_note_ph:"Porquê? (opcional)", no_ideas:"Ainda não há outras propostas.",
+  votes:"votos", vote1:"voto", by:"sugerido por {name}", schedule_this:"Marcar esta visita",
+  someone:"Alguém", you:"tu",
+  err_save:"Não ficou guardado. Tenta outra vez.", err_quota:"A página atingiu o limite de armazenamento. Apaga fotografias antigas para libertar espaço.", err_access:"O teu acesso a esta página mudou. Recarrega a página.",
+  saved:"Guardado", new_visit:"Marcar visita",
+  date_tbc:"data por confirmar", add_past:"Registar visita já feita", rhythm:"de duas em duas semanas",
+  sug_h:"Sugestões para a próxima visita", sug_p_admin:"Aceita as que quiseres pôr a votos.", sug_p_member:"Vejam e votem na que preferirem.",
+  sug_note:"Os horários foram vistos a 10 de outubro de 2026; confirmem no site antes de ir. As imagens são ilustrações, as fotografias estão no site de cada museu.",
+  accept:"Aceitar para a votação", dismiss:"Dispensar", withdraw:"Retirar da votação", st_in:"Na votação", st_pending:"Por aceitar",
+  poll_empty_admin:"Ainda não há opções na votação. Aceita uma sugestão acima ou adiciona uma opção abaixo.", poll_empty:"A administradora ainda não escolheu as opções desta votação.",
+  opts_h_admin:"Adicionar outras opções", opts_p_admin:"Preenche a informação e até três fotografias: a opção aparece igual às sugestões da aplicação e entra logo na votação. As propostas das amigas ficam aqui à espera de serem aceites.",
+  new_opt:"Nova opção", o_title_new:"Nova opção para a votação", o_title_edit:"Editar opção", o_tag:"Frase curta", o_desc:"Descrição", o_addr:"Onde (morada)", o_when:"Quando (horário)", o_url:"Site",
+  o_pics:"Fotografias (até três)", o_cap:"Legenda", choose:"Escolher fotografia", remove:"Tirar", no_pending:"Sem propostas por aceitar.",
+  opts_h_member:"Propor um museu", opts_p_member:"A tua proposta entra na votação quando a administradora a aceitar.",
+  add_vote:"Adicionar à votação", propose:"Propor",
+  admin_h:"Administração", admin_p:"As administradoras aceitam as sugestões, juntam outras opções e decidem o que vai a votos. Quem publicou a página é sempre administradora.",
+  make_admin:"Tornar administradora", unmake_admin:"Retirar", admin_tag:"Administradora", owner_tag:"Dona da página",
+  where:"Onde", when:"Quando", own_ideas:"As vossas ideias",
+  poll_h:"Qual é a próxima visita?", poll_p:"Um voto por pessoa. Podes mudar de ideias ou retirar o voto quando quiseres.",
+  vote:"Votar", vote_this:"Votar neste museu", my_vote:"O teu voto", lead:"Na frente", tie:"Empate",
+  poll_none:"Ainda ninguém votou.", poll_count1:"1 pessoa votou", poll_count:"{n} pessoas votaram", schedule_winner:"Marcar a mais votada"
+},
+en: {
+  brand:"Girls go to the Museum", brand_sub:"Greater Lisbon, every two weeks", demo:"Demo: try anything. Nothing is saved and nobody else sees it.",
+  tab_next:"Next visit", tab_visits:"All visits", tab_ideas:"Vote",
+  f_museum:"Museum", f_date:"Date", f_time:"Time", f_meet:"Meeting point", f_url:"Museum or exhibition website", f_notes:"What we are going to see",
+  cancel:"Cancel", save:"Save", add:"Add", del:"Delete", confirm:"Really delete?", edit:"Edit", close:"Close",
+  name_h:"Your name", name_l:"How the group sees you", set_name:"Set my name",
+  name_ask:"What should we call you? Your name shows on your comments, photos and replies.", name_ph:"Your name",
+  ro:"You are in read-only mode. To schedule visits, comment and add photos, ask the person who shared this page to invite you as an editor.",
+  ro_toast:"This page is read-only for your account.",
+  signin_h:"Sign in to see the visits", signin_p:"The group's visits, comments and photos appear here once you open the page with your Claude account.",
+  loading:"Loading visits…",
+  none_h:"No visit scheduled yet", none_p:"Pick the museum and the date. Then everyone confirms here, and the page keeps the preparation, comments and photos.",
+  none_rhythm:"The last visit was on {last}. Two weeks later is {next}.",
+  schedule:"Schedule a visit", schedule_for:"Schedule for {date}", schedule_first:"Schedule the first visit", edit_visit:"Edit visit", del_visit:"Delete visit",
+  ey_next:"Next visit", ey_planned:"Scheduled visit", ey_done:"Past visit",
+  today:"today", tomorrow:"tomorrow", yesterday:"yesterday", in_days:"in {n} days", days_ago:"{n} days ago",
+  meet:"Meet", seeing:"Seeing", map:"Open in maps", site:"Museum website",
+  rsvp_q:"Are you coming?", yes:"I'm in", maybe:"Maybe", no:"Can't make it", was_q:"Were you there?", was:"I was there",
+  g_yes:"Coming", g_maybe:"Maybe", g_no:"Can't", g_was:"Went", nobody:"No replies yet.",
+  checklist:"To sort out before", checklist_hint:"Tickets, guided tour, lunch. Whoever handles a task ticks it off.",
+  task_ph:"New task", no_tasks:"Nothing to sort out.", q1:"Buy tickets", q2:"Book a guided tour", q3:"Book a table for lunch", q4:"Check opening hours",
+  done_by:"done by {name}",
+  notes:"Notes and links", notes_hint:"What not to miss, the temporary exhibition, how to get there. Pasted addresses become links.",
+  note_ph:"Write a note or paste a link", no_notes:"No notes yet.",
+  photos:"Photos", add_photos:"Add photos", no_photos:"No photos from this visit yet.",
+  uploading:"Uploading {i} of {n}…", photo_bad:"Could not read “{name}”. Try a JPEG or PNG.", photo_alt:"Photo by {name}",
+  prev:"Previous", next:"Next",
+  comments:"Comments", comment_ph:"What did you think? What is worth seeing?", post:"Post", no_comments:"No comments yet.",
+  all_visits:"All visits", upcoming:"Scheduled", journal:"Visit journal", no_visits:"Visits will be listed here in order, each with its photos and comments.",
+  up_next:"After that", went:"{n} went", open:"Open",
+  not_found_h:"This visit no longer exists", not_found_p:"It may have been deleted. See the list of all visits.",
+  ideas_h:"Choosing the next museum", ideas_p:"Add other museums. Each one goes straight into the vote.",
+  idea_ph:"Museum name", idea_note_ph:"Why? (optional)", no_ideas:"No other proposals yet.",
+  votes:"votes", vote1:"vote", by:"suggested by {name}", schedule_this:"Schedule this visit",
+  someone:"Someone", you:"you",
+  err_save:"That was not saved. Try again.", err_quota:"This page has reached its storage limit. Delete older photos to free space.", err_access:"Your access to this page changed. Reload the page.",
+  saved:"Saved", new_visit:"Schedule a visit",
+  date_tbc:"date to confirm", add_past:"Add a visit already made", rhythm:"every two weeks",
+  sug_h:"Suggestions for the next visit", sug_p_admin:"Accept the ones you want to put to the vote.", sug_p_member:"Have a look and vote for your favourite.",
+  sug_note:"Opening hours were checked on 10 October 2026; confirm on the website before going. The images are illustrations, the photos are on each museum's website.",
+  accept:"Accept for the vote", dismiss:"Dismiss", withdraw:"Remove from the vote", st_in:"In the vote", st_pending:"Awaiting approval",
+  poll_empty_admin:"There are no options in the vote yet. Accept a suggestion above or add an option below.", poll_empty:"The admin has not chosen the options for this vote yet.",
+  opts_h_admin:"Add other options", opts_p_admin:"Fill in the details and up to three photos: the option looks just like the app's suggestions and goes straight into the vote. Proposals from friends wait here for your approval.",
+  new_opt:"New option", o_title_new:"New option for the vote", o_title_edit:"Edit option", o_tag:"Short line", o_desc:"Description", o_addr:"Where (address)", o_when:"When (opening hours)", o_url:"Website",
+  o_pics:"Photos (up to three)", o_cap:"Caption", choose:"Choose photo", remove:"Remove", no_pending:"No proposals awaiting approval.",
+  opts_h_member:"Suggest a museum", opts_p_member:"Your proposal joins the vote once the admin accepts it.",
+  add_vote:"Add to the vote", propose:"Suggest",
+  admin_h:"Admins", admin_p:"Admins accept the suggestions, add other options and decide what goes to the vote. Whoever published the page is always an admin.",
+  make_admin:"Make admin", unmake_admin:"Remove", admin_tag:"Admin", owner_tag:"Page owner",
+  where:"Where", when:"When", own_ideas:"Your own ideas",
+  poll_h:"Which museum next?", poll_p:"One vote each. You can change your mind or withdraw your vote at any time.",
+  vote:"Vote", vote_this:"Vote for this museum", my_vote:"Your vote", lead:"In the lead", tie:"Tied",
+  poll_none:"No votes yet.", poll_count1:"1 person has voted", poll_count:"{n} people have voted", schedule_winner:"Schedule the winner"
+}};
+
+const LS = {
+  get(k){ try { return localStorage.getItem(k); } catch (e) { return null; } },
+  set(k,v){ try { localStorage.setItem(k,v); } catch (e) {} }
+};
+let lang = LS.get("mv.lang") || ((navigator.language || "pt").toLowerCase().startsWith("pt") ? "pt" : "en");
+const t = (k, vars) => {
+  let s = T[lang][k] ?? T.en[k] ?? k;
+  if (vars) for (const [a,b] of Object.entries(vars)) s = s.split("{"+a+"}").join(b);
+  return s;
+};
+const $ = id => document.getElementById(id);
+
+function h(tag, attrs, ...kids){
+  const e = document.createElement(tag);
+  if (attrs) for (const [k,v] of Object.entries(attrs)){
+    if (v == null || v === false) continue;
+    if (k === "class") e.className = v;
+    else if (k.startsWith("on")) e.addEventListener(k.slice(2), v);
+    else if (k === "hidden") e.hidden = true;
+    else e.setAttribute(k, v === true ? "" : v);
+  }
+  for (const kid of kids.flat()){
+    if (kid == null || kid === false || kid === "") continue;
+    e.append(kid.nodeType ? kid : document.createTextNode(String(kid)));
+  }
+  return e;
+}
+function linkify(text){
+  const out = [];
+  String(text || "").split(/(https?:\/\/[^\s<>"]+)/g).forEach((part, i) => {
+    if (i % 2) out.push(h("a", {href: part, target: "_blank", rel: "noopener noreferrer"}, part.replace(/^https?:\/\//, "")));
+    else if (part) out.push(part);
+  });
+  return out;
+}
+
+/* dates */
+const pad = n => String(n).padStart(2, "0");
+const ymd = d => d.getFullYear() + "-" + pad(d.getMonth()+1) + "-" + pad(d.getDate());
+const today = () => ymd(new Date());
+function parse(s){ const [y,m,d] = String(s || "").split("-").map(Number); return new Date(y || 2000, (m || 1) - 1, d || 1); }
+function addDays(s, n){ const d = parse(s); d.setDate(d.getDate() + n); return ymd(d); }
+const dayDiff = s => Math.round((parse(s) - parse(today())) / 864e5);
+const loc = () => lang === "pt" ? "pt-PT" : "en-GB";
+const fmt = (s, o) => new Intl.DateTimeFormat(loc(), o).format(parse(s));
+const fmtLong = s => fmt(s, {weekday: "long", day: "numeric", month: "long"});
+const fmtStamp = ms => new Intl.DateTimeFormat(loc(), {day: "numeric", month: "short", hour: "2-digit", minute: "2-digit"}).format(new Date(ms));
+function rel(s){
+  const n = dayDiff(s);
+  if (n === 0) return t("today");
+  if (n === 1) return t("tomorrow");
+  if (n === -1) return t("yesterday");
+  return n > 0 ? t("in_days", {n}) : t("days_ago", {n: -n});
+}
+
+/* state */
+const S = {
+  db: null, user: null, assets: null, ready: false, unavailable: false, readOnly: false, canWrite: null, canEdit: false,
+  uid: null, key: null, isOwner: false, admins: {}, opt: {id: null, pics: ["", "", ""], caps: ["", "", ""], slot: 0}, visits: [], ideas: [], ballots: {}, people: {}, profiles: {}, asked: {},
+  view: "next", visitId: null, detailId: null, sub: {prep: [], photos: [], comments: []}, unsubs: [],
+  sig: "", noticeSig: "", lb: 0, form: null
+};
+
+/* people */
+const myName = () => (S.people[S.key] && S.people[S.key].nick) || (S.uid && S.profiles[S.uid] && S.profiles[S.uid].name) || "";
+const nameOf = key => (S.people[key] && S.people[key].nick) || (S.profiles[key] && S.profiles[key].name) || t("someone");
+function initials(name){
+  const p = String(name).trim().split(/\s+/).filter(Boolean);
+  return ((p[0] || "?")[0] + (p.length > 1 ? p[p.length-1][0] : "")).toUpperCase();
+}
+function avatar(key){
+  const n = nameOf(key), c = S.profiles[key] && S.profiles[key].color;
+  const a = h("span", {class: "av", "aria-hidden": "true"}, initials(n));
+  if (c) a.style.setProperty("--c", c);
+  return a;
+}
+function want(keys){
+  if (!S.user) return;
+  const need = [...new Set(keys)].filter(k => typeof k === "string" && k.startsWith("u_") && !S.asked[k]);
+  if (!need.length) return;
+  need.forEach(k => S.asked[k] = 1);
+  S.user.profiles(need).then(ps => {
+    let got = false;
+    for (const k of need){ const p = ps && ps[k]; if (p) S.profiles[k] = {name: "", color: p.color}; }
+    if (got) repaint();
+  });
+}
+const mine = x => x.by === S.key || S.canEdit;
+function isAdmin(){ return S.isOwner || !!S.admins[S.key]; }
+
+/* saving */
+let toastTimer;
+function toast(msg){
+  const el = $("toast"); el.textContent = msg; el.hidden = false;
+  clearTimeout(toastTimer); toastTimer = setTimeout(() => { el.hidden = true; }, 4200);
+}
+async function save(promise){
+  try { await promise; return true; }
+  catch (e){
+    const c = e && e.code;
+    if (c === "invalid_argument" && S.canWrite !== true && !S.canEdit){ S.readOnly = true; render(); toast(t("ro_toast")); }
+    else if (c === "quota_exceeded") toast(t("err_quota"));
+    else if (c === "revoked" || c === "not_granted") toast(t("err_access"));
+    else toast(t("err_save"));
+    return false;
+  }
+}
+function confirmBtn(label, cls, fn){
+  let armed = false, tm;
+  const b = h("button", {type: "button", class: cls}, label);
+  b.addEventListener("click", () => {
+    if (!armed){
+      armed = true; b.textContent = t("confirm"); b.classList.add("armed");
+      tm = setTimeout(() => { armed = false; b.textContent = label; b.classList.remove("armed"); }, 3500);
+    } else { clearTimeout(tm); b.disabled = true; fn(); }
+  });
+  return b;
+}
+
+/* visits */
+const sorted = () => [...S.visits].filter(v => v.date).sort((a,b) => (a.date + (a.time || "")).localeCompare(b.date + (b.time || "")));
+const upcoming = () => sorted().filter(v => v.date >= today());
+const past = () => sorted().filter(v => v.date < today()).reverse();
+const nextVisit = () => upcoming()[0] || null;
+const dated = () => sorted().filter(v => !v.tbc);
+function suggestDate(){
+  const all = dated(); if (!all.length) return "";
+  let d = addDays(all[all.length-1].date, 14);
+  while (d <= today()) d = addDays(d, 14);
+  return d;
+}
+function currentVisit(){
+  if (S.view === "visit") return S.visits.find(v => v.id === S.visitId) || null;
+  if (S.view === "next") return nextVisit();
+  return null;
+}
+const sig = () => [S.view, (currentVisit() || {}).id || "", S.ready, S.unavailable, S.readOnly, isAdmin(), lang].join("|");
+
+function setDetail(id){
+  if (S.detailId === id) return;
+  S.unsubs.forEach(u => u()); S.unsubs = [];
+  S.sub = {prep: [], photos: [], comments: []}; S.detailId = id;
+  if (!id || !S.db) return;
+  const painters = {prep: paintPrep, photos: paintPhotos, comments: paintComments};
+  for (const k of Object.keys(painters)){
+    S.unsubs.push(S.db.collection("visits/" + id + "/" + k).onSnapshot(snap => {
+      if (S.detailId !== id) return;
+      S.sub[k] = snap.docs.map(d => ({id: d.id, ...d.data()})).sort((a,b) => (a.at || 0) - (b.at || 0));
+      painters[k]();
+    }, () => {}));
+  }
+}
+
+/* navigation */
+function go(view, id){
+  S.view = view; S.visitId = id || null;
+  const token = view === "visit" ? "visit-" + id : view;
+  try { history.replaceState(null, "", "#" + token); } catch (e) { try { location.hash = token; } catch (_) {} }
+  render();
+  try { window.scrollTo(0, 0); } catch (e) {}
+}
+function readHash(){
+  const x = (location.hash || "").replace(/^#/, "");
+  if (x.startsWith("visit-") && x.length > 6){ S.view = "visit"; S.visitId = x.slice(6); }
+  else { S.view = x === "visits" ? "visits" : "next"; S.visitId = null; }
+}
+
+/* static chrome */
+function applyI18n(){
+  document.documentElement.lang = lang === "pt" ? "pt-PT" : "en";
+  document.querySelectorAll("[data-i]").forEach(el => { el.textContent = t(el.dataset.i); });
+  $("lang-pt").setAttribute("aria-pressed", String(lang === "pt"));
+  $("lang-en").setAttribute("aria-pressed", String(lang === "en"));
+  document.querySelectorAll("#tabs button").forEach(b => {
+    const on = b.dataset.view === S.view || (S.view === "visit" && b.dataset.view === "visits");
+    if (on) b.setAttribute("aria-current", "page"); else b.removeAttribute("aria-current");
+  });
+}
+function paintMe(){
+  const b = $("me-btn"), show = S.ready && !S.unavailable && !S.readOnly;
+  b.hidden = !show;
+  if (show) b.textContent = myName() || t("set_name");
+}
+function paintNotice(force){
+  const box = $("notice");
+  const mode = S.unavailable || !S.ready ? "" : S.readOnly ? "ro" : !myName() ? "name" : "";
+  const s = mode + "|" + lang;
+  if (!force && s === S.noticeSig) return;
+  S.noticeSig = s; box.replaceChildren(); box.hidden = !mode;
+  if (mode === "ro") box.append(h("div", {class: "notice"}, h("p", null, t("ro"))));
+  if (mode === "name"){
+    const input = h("input", {type: "text", id: "nick-inline", maxlength: "40", placeholder: t("name_ph"), "aria-label": t("name_l"), autocomplete: "off"});
+    box.append(h("div", {class: "notice"}, h("p", null, t("name_ask")),
+      h("form", {onsubmit: e => { e.preventDefault(); saveNick(input.value); }}, input, h("button", {class: "btn small", type: "submit"}, t("save")))));
+  }
+}
+async function saveNick(v){
+  const nick = String(v || "").trim().slice(0, 40);
+  if (!nick || !S.db) return false;
+  return save(S.db.doc("people/" + S.key).set({nick, at: Date.now()}));
+}
+
+/* ticket */
+function blankTicket(title, text, actions){
+  return h("article", {class: "ticket blank"},
+    h("div", {class: "stub"}, h("span", {class: "stub-wd"}, t("brand_sub").split(",")[0]), h("span", {class: "stub-day"}, "♥"), h("span", {class: "stub-mo"}, t("rhythm"))),
+    h("div", {class: "ticket-body"}, h("h1", null, title), text && h("p", null, text), actions && actions.length ? h("div", {class: "ticket-actions"}, actions) : null));
+}
+function paintTicket(){
+  const box = $("ticket"), v = currentVisit();
+  if (!box || !v) return;
+  const isPast = v.date < today(), W = !S.readOnly;
+  const att = v.attendance || {}, keys = Object.keys(att).filter(k => att[k]);
+  want(keys);
+  const my = att[S.key] || "";
+  const isNext = !isPast && nextVisit() && nextVisit().id === v.id;
+  const eyebrow = (isPast ? t("ey_done") : isNext ? t("ey_next") : t("ey_planned")) + " · " + (v.tbc ? t("date_tbc") : rel(v.date));
+  const setRsvp = val => save(S.db.doc("visits/" + v.id).update({attendance: {[S.key]: my === val ? "" : val}}));
+  const pick = (val, label) => h("button", {type: "button", "aria-pressed": String(my === val), onclick: () => setRsvp(val)}, label);
+  const group = (val, label) => {
+    const ks = keys.filter(k => att[k] === val);
+    return ks.length ? h("div", {class: "who-line"}, h("span", {class: "who-label"}, label + " (" + ks.length + ")"),
+      ks.map(k => h("span", {class: "chip" + (val === "yes" ? "" : " muted")}, avatar(k), nameOf(k) + (k === S.key ? " (" + t("you") + ")" : "")))) : null;
+  };
+  const mapQ = encodeURIComponent((v.meet ? v.museum + ", " + v.meet : v.museum) + ", Portugal");
+  const facts = h("dl", {class: "facts"},
+    v.meet && [h("dt", null, t("meet")), h("dd", null, v.meet)],
+    v.notes && [h("dt", null, t("seeing")), h("dd", null, linkify(v.notes))]);
+  const who = isPast ? [group("yes", t("g_was"))] : [group("yes", t("g_yes")), group("maybe", t("g_maybe")), group("no", t("g_no"))];
+  box.replaceChildren(h("article", {class: "ticket"},
+    h("div", {class: "stub"}, v.tbc
+      ? [h("span", {class: "stub-day"}, "?"), h("span", {class: "stub-mo"}, t("date_tbc"))]
+      : [h("span", {class: "stub-wd"}, fmt(v.date, {weekday: "long"})),
+         h("span", {class: "stub-day"}, String(parse(v.date).getDate())),
+         h("span", {class: "stub-mo"}, fmt(v.date, {month: "long", year: "numeric"})),
+         v.time && h("span", {class: "stub-time"}, v.time)]),
+    h("div", {class: "ticket-body"},
+      h("div", {class: "ticket-head"},
+        h("div", null, h("p", {class: "eyebrow"}, eyebrow), h("h1", null, v.museum || "")),
+        W && h("button", {class: "btn ghost small", type: "button", onclick: () => openVisitForm(v)}, t("edit"))),
+      (v.meet || v.notes) && facts,
+      h("div", {class: "links"},
+        h("a", {href: "https://www.google.com/maps/search/?api=1&query=" + mapQ, target: "_blank", rel: "noopener noreferrer"}, t("map") + " ↗"),
+        v.url && h("a", {href: v.url, target: "_blank", rel: "noopener noreferrer"}, t("site") + " ↗")),
+      h("div", {class: "rsvp"},
+        W && h("div", {class: "rsvp-q"}, h("span", null, isPast ? t("was_q") : t("rsvp_q")),
+          h("div", {class: "choice"}, isPast ? pick("yes", t("was")) : [pick("yes", "✓ " + t("yes")), pick("maybe", "? " + t("maybe")), pick("no", "✕ " + t("no"))])),
+        h("div", {class: "who"}, who.some(Boolean) ? who : h("p", {class: "empty"}, t("nobody")))))));
+}
+
+/* preparation */
+function addPrep(kind, text){
+  const v = S.detailId; text = String(text || "").trim();
+  if (!v || !text) return Promise.resolve(false);
+  return save(S.db.collection("visits/" + v + "/prep").doc().set({kind, text: text.slice(0, 2000), done: false, by: S.key, at: Date.now()}));
+}
+function paintPrep(){
+  const tl = $("tasks"), nl = $("notes");
+  if (!tl || !nl) return;
+  const W = !S.readOnly, v = S.detailId;
+  const tasks = S.sub.prep.filter(p => p.kind === "task"), notes = S.sub.prep.filter(p => p.kind !== "task");
+  want(S.sub.prep.flatMap(p => [p.by, p.doneBy]));
+  const ref = p => S.db.doc("visits/" + v + "/prep/" + p.id);
+  tl.replaceChildren(...(tasks.length ? tasks.map(p => {
+    const cb = h("input", {type: "checkbox", id: "task-" + p.id});
+    cb.checked = !!p.done; cb.disabled = !W;
+    cb.addEventListener("change", async () => { cb.disabled = true; await save(ref(p).update({done: cb.checked, doneBy: cb.checked ? S.key : ""})); cb.disabled = false; });
+    return h("li", {class: "task" + (p.done ? " done" : "")},
+      h("label", {for: "task-" + p.id}, cb, h("span", null, h("span", {class: "txt"}, p.text), p.done && p.doneBy ? h("span", {class: "by"}, " · " + t("done_by", {name: nameOf(p.doneBy)})) : null)),
+      W && confirmBtn(t("del"), "textbtn", () => save(ref(p).delete())));
+  }) : [h("li", {class: "empty"}, t("no_tasks"))]));
+  const quick = $("task-quick");
+  if (quick){
+    const have = new Set(tasks.map(p => p.text));
+    const opts = ["q1","q2","q3","q4"].map(k => t(k)).filter(x => !have.has(x));
+    quick.replaceChildren(...(tasks.length < 4 ? opts.map(x => h("button", {type: "button", onclick: () => addPrep("task", x)}, "+ " + x)) : []));
+  }
+  nl.replaceChildren(...(notes.length ? notes.map(p => h("li", {class: "note"},
+    h("div", {class: "txt"}, linkify(p.text)),
+    h("div", {class: "meta"}, h("span", null, nameOf(p.by)), W && mine(p) && confirmBtn(t("del"), "textbtn", () => save(ref(p).delete()))))) : [h("li", {class: "empty"}, t("no_notes"))]));
+}
+
+/* photographs */
+const photoSrc = p => p.asset ? "/_blob/" + p.asset : (p.data || "");
+async function loadImage(file){
+  if ("createImageBitmap" in window){ try { return await createImageBitmap(file, {imageOrientation: "from-image"}); } catch (e) {} }
+  return new Promise((res, rej) => { const img = new Image(); img.onload = () => res(img); img.onerror = () => rej(new Error("decode")); img.src = URL.createObjectURL(file); });
+}
+function draw(src, max){
+  const w0 = src.naturalWidth || src.width, h0 = src.naturalHeight || src.height, k = Math.min(1, max / Math.max(w0, h0));
+  const c = document.createElement("canvas"); c.width = Math.max(1, Math.round(w0 * k)); c.height = Math.max(1, Math.round(h0 * k));
+  c.getContext("2d").drawImage(src, 0, 0, c.width, c.height); return c;
+}
+const toBlob = (c, q) => new Promise(r => c.toBlob(r, "image/jpeg", q));
+async function storePhoto(src){
+  if (S.assets){
+    const blob = await toBlob(draw(src, 1600), 0.82);
+    for (let attempt = 0; attempt < 2 && blob; attempt++){
+      try { const r = await S.assets.upload(blob, {type: "image/jpeg"}); return {asset: r.id}; }
+      catch (e){
+        const c = e && e.code;
+        if (c === "store_unavailable" && attempt === 0){ await new Promise(r => setTimeout(r, 900)); continue; }
+        if (c === "not_granted" || c === "capability_disabled" || c === "capability_removed"){ S.assets = null; break; }
+        throw e;
+      }
+    }
+  }
+  let c = draw(src, 1280), q = 0.74, url = c.toDataURL("image/jpeg", q);
+  while (url.length > 230000 && q > 0.42){ q -= 0.1; url = c.toDataURL("image/jpeg", q); }
+  if (url.length > 230000) url = draw(src, 1000).toDataURL("image/jpeg", 0.6);
+  if (url.length > 230000) url = draw(src, 760).toDataURL("image/jpeg", 0.55);
+  return {data: url};
+}
+async function uploadPhotos(files){
+  const vid = S.detailId, status = $("upload-status"), btn = $("upload-btn");
+  if (!vid || !files.length) return;
+  if (btn) btn.disabled = true;
+  let cover = "";
+  for (let i = 0; i < files.length; i++){
+    if (status){ status.hidden = false; status.textContent = t("uploading", {i: i + 1, n: files.length}); }
+    let src;
+    try { src = await loadImage(files[i]); } catch (e){ toast(t("photo_bad", {name: files[i].name})); continue; }
+    try {
+      const refd = await storePhoto(src);
+      const ok = await save(S.db.collection("visits/" + vid + "/photos").doc().set({...refd, by: S.key, at: Date.now() + i}));
+      if (!ok) break;
+      cover = draw(src, 240).toDataURL("image/jpeg", 0.6);
+    } catch (e){
+      toast(e && (e.code === "quota_or_state" || e.code === "too_large") ? t("err_quota") : t("err_save")); break;
+    }
+  }
+  if (cover) await save(S.db.doc("visits/" + vid).update({cover}));
+  if (status) status.hidden = true;
+  if (btn) btn.disabled = false;
+}
+function paintPhotos(){
+  const box = $("photos"); if (!box) return;
+  const ps = S.sub.photos; want(ps.map(p => p.by));
+  box.replaceChildren(...(ps.length ? ps.map((p, i) => h("button", {class: "photo", type: "button", onclick: () => openLightbox(i)},
+    h("img", {src: photoSrc(p), alt: t("photo_alt", {name: nameOf(p.by)}), loading: "lazy"}))) : [h("p", {class: "empty"}, t("no_photos"))]));
+  if ($("lightbox").open) paintLightbox();
+}
+function openLightbox(i){ S.lb = i; paintLightbox(); if (!$("lightbox").open) $("lightbox").showModal(); }
+function paintLightbox(){
+  const ps = S.sub.photos, dlg = $("lightbox");
+  if (!ps.length){ if (dlg.open) dlg.close(); return; }
+  S.lb = Math.max(0, Math.min(S.lb, ps.length - 1));
+  const p = ps[S.lb], vid = S.detailId;
+  const step = d => { S.lb = (S.lb + d + ps.length) % ps.length; paintLightbox(); };
+  $("lb").replaceChildren(
+    h("div", {class: "lb-stage"}, h("img", {src: photoSrc(p), alt: t("photo_alt", {name: nameOf(p.by)})})),
+    h("div", {class: "lb-bar"},
+      h("div", {class: "meta"}, h("strong", null, nameOf(p.by)), h("span", null, fmtStamp(p.at || Date.now())), h("span", null, (S.lb + 1) + " / " + ps.length)),
+      h("div", null,
+        !S.readOnly && mine(p) && confirmBtn(t("del"), "btn ghost small danger", async () => {
+          const ok = await save(S.db.doc("visits/" + vid + "/photos/" + p.id).delete());
+          if (ok && p.asset && S.assets) S.assets.delete(p.asset).catch(() => {});
+        }),
+        ps.length > 1 && h("button", {class: "btn ghost small", type: "button", onclick: () => step(-1)}, "← " + t("prev")),
+        ps.length > 1 && h("button", {class: "btn ghost small", type: "button", onclick: () => step(1)}, t("next") + " →"),
+        h("button", {class: "btn small", type: "button", onclick: () => dlg.close()}, t("close")))));
+}
+
+/* comments */
+function paintComments(){
+  const box = $("comments"); if (!box) return;
+  const cs = S.sub.comments, vid = S.detailId; want(cs.map(c => c.by));
+  box.replaceChildren(...(cs.length ? cs.map(c => h("li", {class: "comment"}, avatar(c.by),
+    h("div", null,
+      h("div", {class: "meta"}, h("strong", null, nameOf(c.by)), h("span", null, fmtStamp(c.at || Date.now())),
+        !S.readOnly && mine(c) && confirmBtn(t("del"), "textbtn", () => save(S.db.doc("visits/" + vid + "/comments/" + c.id).delete()))),
+      h("div", {class: "txt"}, linkify(c.text))))) : [h("li", {class: "empty"}, t("no_comments"))]));
+}
+
+/* views */
+function vrow(v){
+  const n = Object.values(v.attendance || {}).filter(x => x === "yes").length, isPast = v.date < today();
+  return h("button", {class: "vrow", type: "button", onclick: () => go("visit", v.id)},
+    v.cover ? h("img", {class: "thumb", src: v.cover, alt: ""}) : h("span", {class: "thumb none", "aria-hidden": "true"}),
+    h("span", null,
+      h("span", {class: "vrow-name"}, v.museum || ""), h("br"),
+      h("span", {class: "vrow-date"}, (v.tbc ? t("date_tbc") : fmt(v.date, {weekday: "short", day: "numeric", month: "long", year: "numeric"}) + (v.time ? " · " + v.time : "")) + (isPast && n ? " · " + t("went", {n}) : !isPast ? " · " + rel(v.date) : ""))),
+    h("span", {class: "vrow-go", "aria-hidden": "true"}, "→"));
+}
+function detailShell(){
+  const W = !S.readOnly;
+  const taskIn = h("input", {type: "text", id: "task-input", maxlength: "200", placeholder: t("task_ph"), "aria-label": t("task_ph")});
+  const noteIn = h("textarea", {id: "note-input", maxlength: "2000", placeholder: t("note_ph"), "aria-label": t("note_ph")});
+  const comIn = h("textarea", {id: "comment-input", maxlength: "2000", placeholder: t("comment_ph"), "aria-label": t("comment_ph")});
+  const sub = (el, fn) => async e => { e.preventDefault(); const b = e.submitter; if (b) b.disabled = true; if (await fn(el.value)) el.value = ""; if (b) b.disabled = false; };
+  return h("div", {class: "detail"},
+    S.view === "visit" && h("button", {class: "back", type: "button", onclick: () => go("visits")}, "← " + t("all_visits")),
+    h("div", {id: "ticket"}),
+    h("section", {class: "sec two"},
+      h("div", {class: "col"}, h("h2", null, t("checklist")), h("p", {class: "hint"}, t("checklist_hint")), h("ul", {id: "tasks", class: "tasks"}),
+        W && h("form", {class: "row-form", onsubmit: sub(taskIn, v => addPrep("task", v))}, taskIn, h("button", {class: "btn small", type: "submit"}, t("add"))),
+        W && h("div", {id: "task-quick", class: "quick"})),
+      h("div", {class: "col"}, h("h2", null, t("notes")), h("p", {class: "hint"}, t("notes_hint")), h("ul", {id: "notes", class: "notes"}),
+        W && h("form", {class: "composer", onsubmit: sub(noteIn, v => addPrep("note", v))}, noteIn, h("button", {class: "btn small", type: "submit"}, t("add"))))),
+    h("section", {class: "sec"},
+      h("div", {class: "sec-head"}, h("h2", null, t("photos")),
+        W && h("button", {class: "btn small", type: "button", id: "upload-btn", onclick: () => $("photo-input").click()}, t("add_photos"))),
+      h("p", {id: "upload-status", class: "hint", hidden: true}),
+      h("div", {id: "photos", class: "photos"})),
+    h("section", {class: "sec"}, h("h2", null, t("comments")), h("ul", {id: "comments", class: "comments"}),
+      W && h("form", {class: "composer", onsubmit: sub(comIn, async v => {
+        v = String(v || "").trim(); if (!v || !S.detailId) return false;
+        return save(S.db.collection("visits/" + S.detailId + "/comments").doc().set({text: v, by: S.key, at: Date.now()}));
+      })}, comIn, h("button", {class: "btn small", type: "submit"}, t("post")))),
+    S.view === "next" && h("div", {id: "upnext"}));
+}
+function paintUpNext(){
+  const box = $("upnext"); if (!box) return;
+  const cur = currentVisit(), rest = upcoming().filter(v => !cur || v.id !== cur.id);
+  box.replaceChildren(...(rest.length ? [h("section", {class: "sec"}, h("div", {class: "group"}, h("h2", null, t("up_next")), h("div", {class: "list"}, rest.map(vrow))))] : []));
+}
+function noNext(){
+  const W = !S.readOnly && S.ready;
+  const all = dated(), sug = suggestDate();
+  const text = all.length ? t("none_rhythm", {last: fmtLong(all[all.length-1].date), next: fmtLong(sug)}) : t("none_p");
+  const actions = W ? [h("button", {class: "btn", type: "button", onclick: () => openVisitForm(null, {date: sug})}, all.length ? t("schedule_for", {date: fmt(sug, {day: "numeric", month: "long"})}) : S.visits.length ? t("schedule") : t("schedule_first"))] : [];
+  return blankTicket(S.ready ? t("none_h") : t("loading"), S.ready ? text : t("none_p"), actions);
+}
+function visitsView(){
+  const W = !S.readOnly && S.ready, up = upcoming(), pa = past();
+  return h("div", {class: "detail"},
+    h("div", {class: "page-head"}, h("h1", null, t("all_visits")), W && h("div", {class: "ticket-actions"},
+      h("button", {class: "btn ghost", type: "button", onclick: () => openVisitForm(null, {past: true})}, t("add_past")),
+      h("button", {class: "btn", type: "button", onclick: () => openVisitForm(null, {date: suggestDate()})}, t("schedule")))),
+    !up.length && !pa.length && h("p", {class: "hint"}, S.ready ? t("no_visits") : t("loading")),
+    up.length ? h("div", {class: "group"}, h("h2", null, t("upcoming")), h("div", {class: "list"}, up.map(vrow))) : null,
+    pa.length ? h("div", {class: "group"}, h("h2", null, t("journal")), h("div", {class: "list"}, pa.map(vrow))) : null);
+}
+function ideasView(){
+  const W = !S.readOnly && S.ready, adm = isAdmin();
+  const name = h("input", {type: "text", id: "idea-name", list: "museus", maxlength: "120", placeholder: t("idea_ph"), "aria-label": t("idea_ph"), autocomplete: "off"});
+  const note = h("input", {type: "text", id: "idea-note", maxlength: "300", placeholder: t("idea_note_ph"), "aria-label": t("idea_note_ph")});
+  return h("section", {class: "sec"},
+    h("div", {class: "group"}, h("h2", null, adm ? t("opts_h_admin") : t("opts_h_member")), h("p", {class: "hint"}, adm ? t("opts_p_admin") : t("opts_p_member"))),
+    W && adm && h("div", {class: "ticket-actions"}, h("button", {class: "btn", type: "button", onclick: () => openOptionForm(null)}, "+ " + t("new_opt"))),
+    W && !adm && h("form", {class: "idea-form", onsubmit: async e => {
+      e.preventDefault(); const n = name.value.trim(); if (!n) return;
+      if (await save(S.db.collection("ideas").doc().set({name: n, note: note.value.trim(), by: S.key, at: Date.now(), accepted: false}))){ name.value = ""; note.value = ""; }
+    }}, name, note, h("button", {class: "btn", type: "submit"}, t("propose"))),
+    h("div", {id: "ideas-list", class: "list"}));
+}
+function paintIdeas(){
+  const box = $("ideas-list"); if (!box) return;
+  const W = !S.readOnly, adm = isAdmin();
+  const list = S.ideas.filter(i => !SUG[i.slug] && !i.accepted).sort((a,b) => (a.at || 0) - (b.at || 0));
+  want(list.map(i => i.by));
+  box.replaceChildren(...(list.length ? list.map(i => {
+    const ref = S.db.doc("ideas/" + i.id);
+    return h("div", {class: "idea solo"}, h("div", {class: "idea-main"},
+      h("div", {class: "poll-name"}, h("span", {class: "vrow-name"}, i.name || ""), h("span", {class: "tag wait"}, t("st_pending"))),
+      (i.desc || i.note) && h("span", {class: "txt"}, linkify(i.desc || i.note)),
+      h("div", {class: "meta"}, h("span", null, t("by", {name: nameOf(i.by)})),
+        adm && W && h("button", {class: "btn small", type: "button", onclick: () => save(ref.update({accepted: true}))}, t("accept")),
+        adm && W && h("button", {class: "textbtn", type: "button", onclick: () => openOptionForm(i)}, t("edit")),
+        W && (adm || i.by === S.key) && confirmBtn(t("del"), "textbtn", () => save(ref.delete())))));
+  }) : [h("p", {class: "empty"}, !S.ready ? t("loading") : adm ? t("no_pending") : t("no_ideas"))]));
+}
+
+/* suggestions for the next visit: text and illustrations live here, votes live in the shared store */
+const star = (x, y, r) => { const k = r * 0.28; return '<path class="p-g" d="M'+x+' '+(y-r)+' L'+(x+k)+' '+(y-k)+' L'+(x+r)+' '+y+' L'+(x+k)+' '+(y+k)+' L'+x+' '+(y+r)+' L'+(x-k)+' '+(y+k)+' L'+(x-r)+' '+y+' L'+(x-k)+' '+(y-k)+' Z"/>'; };
+const pic = inner => label => '<svg viewBox="0 0 120 120" role="img" aria-label="' + label.replace(/"/g, "") + '"><rect class="p-bg" width="120" height="120"/>' + inner + '</svg>';
+function fanBlades(){
+  const cx = 60, cy = 98, r = 64, n = 7, a0 = 205, a1 = 335, pt = a => [(cx + r * Math.cos(a * Math.PI / 180)).toFixed(1), (cy + r * Math.sin(a * Math.PI / 180)).toFixed(1)];
+  let out = "";
+  for (let i = 0; i < n; i++){
+    const p = pt(a0 + (a1 - a0) * i / n), q = pt(a0 + (a1 - a0) * (i + 1) / n);
+    out += '<path class="' + (i % 2 ? "p-b" : "p-a") + '" d="M'+cx+' '+cy+' L'+p[0]+' '+p[1]+' A'+r+' '+r+' 0 0 1 '+q[0]+' '+q[1]+' Z"/>';
+  }
+  for (let i = 0; i <= n; i++){ const p = pt(a0 + (a1 - a0) * i / n); out += '<path class="p-l" d="M'+cx+' '+cy+' L'+p[0]+' '+p[1]+'"/>'; }
+  return out + '<circle class="p-g" cx="'+cx+'" cy="'+cy+'" r="5"/>' + star(22, 26, 6) + star(100, 22, 5);
+}
+const PICS = {
+  maat1: pic('<circle class="p-g" cx="88" cy="32" r="12"/><path class="p-w" d="M6 82 C26 54 72 44 114 72 L114 84 L6 84 Z"/><path class="p-l" d="M6 82 C26 54 72 44 114 72"/><path class="p-k" d="M30 84 C44 68 78 66 96 84 Z"/><rect class="p-b" y="84" width="120" height="36"/><path class="p-la" d="M10 97 q8 -6 16 0 t16 0 t16 0 t16 0 t16 0 t16 0"/><path class="p-la" d="M2 109 q8 -6 16 0 t16 0 t16 0 t16 0 t16 0 t16 0 t16 0"/>'),
+  maat2: pic('<path class="p-a" d="M16 90 C16 84 24 80 34 80 C48 80 60 74 70 60 C76 52 80 46 86 44 C93 46 95 54 93 62 L93 98 L88 98 L85 68 C77 80 62 90 44 92 L18 93 Z"/><path class="p-b" d="M34 80 C48 80 60 74 70 60 C72 67 66 79 50 85 Z"/><rect class="p-k" x="10" y="98" width="100" height="2" rx="1"/>' + star(36, 40, 10) + star(60, 26, 5) + star(104, 80, 5)),
+  maat3: pic('<path class="p-a" d="M60 102 C22 74 14 46 30 32 C44 20 58 30 60 42 C62 30 76 20 90 32 C106 46 98 74 60 102 Z"/><path class="p-lw" d="M60 88 C36 70 30 54 39 45 C47 38 57 44 60 54 C63 44 73 38 81 45 C90 54 84 70 60 88 Z"/><circle class="p-g" cx="60" cy="66" r="5"/>' + star(102, 22, 7) + star(16, 92, 5)),
+  tes1: pic('<path class="p-g" d="M28 78 L22 44 L42 60 L60 34 L78 60 L98 44 L92 78 Z"/><rect class="p-g" x="26" y="78" width="68" height="13" rx="3"/><circle class="p-a" cx="22" cy="42" r="5"/><circle class="p-a" cx="60" cy="31" r="6"/><circle class="p-a" cx="98" cy="42" r="5"/><circle class="p-w" cx="43" cy="84.5" r="3"/><circle class="p-a" cx="60" cy="84.5" r="4"/><circle class="p-w" cx="77" cy="84.5" r="3"/>' + star(104, 20, 6) + star(16, 96, 5)),
+  tes2: pic('<path class="p-w" d="M38 42 L82 42 L100 62 L60 102 L20 62 Z"/><path class="p-b" d="M38 42 L50 62 L20 62 Z"/><path class="p-b" d="M82 42 L100 62 L70 62 Z"/><path class="p-b" d="M50 62 L70 62 L60 102 Z"/><path class="p-l" d="M38 42 L82 42 L100 62 L60 102 L20 62 Z M20 62 L100 62 M38 42 L50 62 L60 42 L70 62 L82 42 M50 62 L60 102 L70 62"/>' + star(98, 26, 8) + star(20, 30, 5) + star(102, 96, 5)),
+  tes3: pic('<rect class="p-b" y="92" width="120" height="28"/><rect class="p-w" x="12" y="50" width="96" height="42"/><rect class="p-w" x="12" y="38" width="22" height="54"/><rect class="p-w" x="86" y="38" width="22" height="54"/><path class="p-w" d="M44 50 L60 36 L76 50 Z"/><path class="p-l" d="M12 92 L12 38 L34 38 L34 50 L44 50 L60 36 L76 50 L86 50 L86 38 L108 38 L108 92"/><rect class="p-a" x="18" y="45" width="10" height="14" rx="5"/><rect class="p-a" x="18" y="68" width="10" height="14" rx="5"/><rect class="p-a" x="92" y="45" width="10" height="14" rx="5"/><rect class="p-a" x="92" y="68" width="10" height="14" rx="5"/><rect class="p-a" x="41" y="56" width="9" height="12" rx="4.5"/><rect class="p-a" x="55.5" y="56" width="9" height="12" rx="4.5"/><rect class="p-a" x="70" y="56" width="9" height="12" rx="4.5"/><path class="p-k" d="M41 92 v-12 a4.5 4.5 0 0 1 9 0 v12 Z M55.5 92 v-12 a4.5 4.5 0 0 1 9 0 v12 Z M70 92 v-12 a4.5 4.5 0 0 1 9 0 v12 Z"/>' + star(100, 20, 6)),
+  med1: pic('<rect class="p-b" y="98" width="120" height="22"/><path class="p-g" d="M40 96 L40 50 C40 32 80 32 80 50 L80 96 Z"/><rect class="p-g" x="33" y="92" width="54" height="9" rx="2"/><circle class="p-g" cx="60" cy="28" r="5"/><circle class="p-w" cx="60" cy="60" r="15"/><circle class="p-l" cx="60" cy="60" r="15"/><path class="p-l" d="M60 60 L60 50 M60 60 L67 64"/><circle class="p-a" cx="60" cy="84" r="4"/>' + star(100, 30, 6) + star(18, 44, 5)),
+  med2: pic('<rect class="p-b" y="98" width="120" height="22"/><path class="p-w" d="M50 22 L70 22 L67 34 C88 46 90 74 74 98 L46 98 C30 74 32 46 53 34 Z"/><path class="p-l" d="M50 22 L70 22 L67 34 C88 46 90 74 74 98 L46 98 C30 74 32 46 53 34 Z M53 34 L67 34"/><circle class="p-b" cx="60" cy="52" r="5"/><circle class="p-b" cx="69" cy="59" r="5"/><circle class="p-b" cx="66" cy="70" r="5"/><circle class="p-b" cx="54" cy="70" r="5"/><circle class="p-b" cx="51" cy="59" r="5"/><circle class="p-a" cx="60" cy="62" r="5"/><path class="p-la" d="M44 86 q8 -7 16 0 q8 7 16 0"/>' + star(100, 28, 6) + star(18, 60, 5)),
+  med3: pic(fanBlades()),
+  pr1: pic('<rect class="p-b" y="92" width="120" height="28"/><path class="p-a" d="M26 92 L26 64 L42 24 L58 64 L58 92 Z"/><path class="p-a" d="M62 92 L62 64 L78 24 L94 64 L94 92 Z"/><rect class="p-a" x="14" y="72" width="92" height="20"/><path class="p-l" d="M26 64 L58 64 M62 64 L94 64"/><rect class="p-k" x="54" y="78" width="12" height="14"/><path class="p-l" d="M106 92 L106 66"/><ellipse class="p-g" cx="106" cy="58" rx="11" ry="8"/>' + star(14, 26, 6) + star(102, 22, 4)),
+  pr2: pic('<rect class="p-g" x="24" y="22" width="72" height="78" rx="3"/><rect class="p-w" x="32" y="30" width="56" height="62"/><path class="p-a" d="M44 88 L60 56 L76 88 Z"/><circle class="p-k" cx="60" cy="48" r="8"/><path class="p-l" d="M46 66 L38 76 M74 66 L82 76"/><path class="p-b" d="M32 84 h56 v8 h-56 Z"/><path class="p-a" d="M44 88 L48 80 L72 80 L76 88 Z"/>' + star(104, 16, 5)),
+  pr3: pic('<path class="p-w" d="M50 90 L54 38 L66 38 L70 90 Z"/><path class="p-a" d="M53.1 50 L66.9 50 L67.8 62 L52.2 62 Z"/><path class="p-a" d="M51.3 74 L68.7 74 L69.6 86 L50.4 86 Z"/><path class="p-l" d="M50 90 L54 38 L66 38 L70 90"/><rect class="p-k" x="53" y="28" width="14" height="10"/><path class="p-a" d="M50 28 L60 17 L70 28 Z"/><rect class="p-b" y="90" width="120" height="30"/><path class="p-la" d="M6 101 q8 -6 16 0 t16 0 t16 0 t16 0 t16 0 t16 0"/><path class="p-la" d="M-2 112 q8 -6 16 0 t16 0 t16 0 t16 0 t16 0 t16 0 t16 0"/>' + star(92, 32, 9) + star(22, 40, 5))
+};
+const BLANK = [
+  pic('<rect class="p-b" x="28" y="32" width="64" height="56" rx="4"/><rect class="p-w" x="35" y="39" width="50" height="42"/>' + star(60, 60, 10) + star(100, 24, 5)),
+  pic(star(60, 60, 15) + star(28, 32, 6) + star(94, 90, 6)),
+  pic('<path class="p-a" d="M60 88 C36 70 32 53 42 45 C50 39 58 45 60 52 C62 45 70 39 78 45 C88 53 84 70 60 88 Z"/>' + star(24, 30, 6) + star(98, 96, 5))
+];
+const SUG = {
+  maat: { name: "MAAT – Museu de Arte, Arquitetura e Tecnologia", addr: "Av. Brasília, Belém, 1300-598 Lisboa", url: "https://www.maat.pt/pt", pics: [PICS.maat1, PICS.maat2, PICS.maat3],
+    pt: { tag: "Arte e moda à beira-Tejo", when: "Quarta a segunda, das 10h às 19h. Fecha à terça.",
+      desc: "Até 22 de fevereiro de 2027 está lá «Venus»: Joana Vasconcelos em diálogo com mais de 40 peças de alta-costura e pronto-a-vestir de Valentino, com os sapatos gigantes «Marilyn» e o «Coração Independente». No fim, vale a pena subir à cobertura do edifício para ver o rio.",
+      caps: ["O edifício ondulado sobre o Tejo", "«Marilyn», os saltos altos gigantes", "«Coração Independente»"] },
+    en: { tag: "Art and fashion by the Tagus", when: "Wednesday to Monday, 10:00 to 19:00. Closed on Tuesdays.",
+      desc: "Until 22 February 2027 it hosts “Venus”: Joana Vasconcelos in dialogue with more than 40 haute couture and ready-to-wear pieces by Valentino, including the giant “Marilyn” shoes and “Coração Independente”. Afterwards, walk up onto the roof of the building for the river view.",
+      caps: ["The wave-shaped building on the Tagus", "“Marilyn”, the giant high heels", "“Coração Independente”"] } },
+  tesouro: { name: "Museu do Tesouro Real", addr: "Palácio Nacional da Ajuda, Calçada da Ajuda, 1349-021 Lisboa", url: "https://www.tesouroreal.pt/", pics: [PICS.tes1, PICS.tes2, PICS.tes3],
+    pt: { tag: "As joias da coroa", when: "Todos os dias, das 10h às 18h. Última entrada uma hora antes do fecho.",
+      desc: "Mais de 900 peças de ourivesaria e joalharia da antiga Casa Real, guardadas numa caixa-forte dentro do Palácio da Ajuda: ouro e diamantes do Brasil, insígnias régias e a baixela Germain. Foi distinguido como Museu do Ano 2026 e tem cafetaria para o depois.",
+      caps: ["As insígnias régias", "Ouro e diamantes do Brasil", "O Palácio da Ajuda"] },
+    en: { tag: "The crown jewels", when: "Every day, 10:00 to 18:00. Last entry one hour before closing.",
+      desc: "More than 900 pieces of goldsmith work and jewellery from the former Royal House, kept in a vault inside the Ajuda Palace: gold and diamonds from Brazil, royal insignia and the Germain silver service. It was named Museum of the Year 2026 and has a café for afterwards.",
+      caps: ["The royal insignia", "Gold and diamonds from Brazil", "The Ajuda Palace"] } },
+  paularego: { name: "Casa das Histórias Paula Rego", addr: "Av. Papa Francisco, 300, 2750-475 Cascais", url: "https://casadashistoriaspaularego.com/", pics: [PICS.pr1, PICS.pr2, PICS.pr3],
+    pt: { tag: "Um dia em Cascais", when: "Terça a domingo, das 10h às 18h (última entrada às 17h40). Fecha à segunda.",
+      desc: "O museu dedicado a Paula Rego, num edifício de Eduardo Souto de Moura com duas torres em pirâmide de betão vermelho. Mostra pintura, desenho e gravura da artista; a fundação anuncia agora a exposição «Meninas Exemplares». Vai-se de comboio a partir do Cais do Sodré e dá para juntar um almoço à beira-mar.",
+      caps: ["As duas torres em pirâmide", "Pintura, desenho e gravura", "Cascais, à beira-mar"] },
+    en: { tag: "A day out in Cascais", when: "Tuesday to Sunday, 10:00 to 18:00 (last entry 17:40). Closed on Mondays.",
+      desc: "The museum dedicated to Paula Rego, in a building by Eduardo Souto de Moura with two pyramid towers in red concrete. It shows the artist's paintings, drawings and prints; the foundation currently lists the exhibition “Meninas Exemplares”. Take the train from Cais do Sodré and add a lunch by the sea.",
+      caps: ["The two pyramid towers", "Paintings, drawings and prints", "Cascais, by the sea"] } }
+};
+/* the vote: one ballot per person, kept at ballots/<person> */
+function tally(){
+  const m = {};
+  for (const [k, b] of Object.entries(S.ballots)) if (b && b.choice && S.ideas.some(i => i.id === b.choice && i.accepted)) (m[b.choice] = m[b.choice] || []).push(k);
+  return m;
+}
+const myVote = () => (S.ballots[S.key] && S.ballots[S.key].choice) || "";
+const castVote = id => save(S.db.doc("ballots/" + S.key).set({choice: myVote() === id ? "" : id, at: Date.now()}));
+function ideaPrefill(i){
+  const s = SUG[i.slug];
+  return s ? {museum: s.name, url: s.url, notes: (s[lang] || s.pt).tag, date: suggestDate(), fromIdea: i.id}
+           : {museum: i.name, url: i.url || "", notes: i.tag || i.note || "", date: suggestDate(), fromIdea: i.id};
+}
+function pollPanel(tl){
+  const W = !S.readOnly, mine = myVote(), adm = isAdmin();
+  const head = h("div", {class: "sugs-head"}, h("h2", null, t("poll_h")));
+  const opts = S.ideas.filter(i => i.accepted).map(i => ({i, n: (tl[i.id] || []).length, order: (SUG[i.slug] ? 0 : 1e15) + (i.at || 0)})).sort((a,b) => b.n - a.n || a.order - b.order);
+  if (!opts.length){ head.append(h("p", {class: "hint"}, !S.ready ? t("loading") : adm ? t("poll_empty_admin") : t("poll_empty"))); return h("section", {class: "poll"}, head); }
+  head.append(h("p", {class: "hint"}, t("poll_p")));
+  const total = opts.reduce((x, o) => x + o.n, 0), max = Math.max(1, ...opts.map(o => o.n));
+  const top = opts.filter(o => o.n > 0 && o.n === opts[0].n);
+  want(Object.keys(S.ballots));
+  return h("section", {class: "poll"}, head,
+    h("ul", {class: "poll-rows"}, opts.map(o => {
+      const on = mine === o.i.id, voters = (tl[o.i.id] || []).map(nameOf).join(", ");
+      const btn = h("button", {class: "heart", type: "button", "aria-pressed": String(on), onclick: () => castVote(o.i.id)}, on ? "♥ " + t("my_vote") : "♡ " + t("vote"));
+      btn.disabled = !W;
+      const fill = h("span", {class: "bar-fill"}); fill.style.width = (o.n / max * 100) + "%";
+      return h("li", {class: "poll-row"}, btn,
+        h("div", {class: "poll-main"},
+          h("div", {class: "poll-name"}, h("span", null, SUG[o.i.slug] ? SUG[o.i.slug].name : o.i.name || ""), top.includes(o) && h("span", {class: "tag"}, top.length === 1 ? t("lead") : t("tie"))),
+          !SUG[o.i.slug] && (o.i.tag || o.i.note) && h("div", {class: "by"}, o.i.tag || o.i.note),
+          h("div", {class: "bar", title: voters || null}, fill),
+          voters && h("div", {class: "by"}, voters)),
+        h("span", {class: "poll-n"}, String(o.n)));
+    })),
+    h("div", {class: "poll-foot"},
+      h("span", {class: "hint"}, total === 0 ? t("poll_none") : total === 1 ? t("poll_count1") : t("poll_count", {n: total})),
+      W && top.length === 1 && h("button", {class: "btn small", type: "button", onclick: () => openVisitForm(null, ideaPrefill(top[0].i))}, t("schedule_winner"))));
+}
+/* one card shape for every option: the app's suggestions and the ones the admin writes */
+function contentOf(i){
+  const s = SUG[i.slug];
+  if (s){ const c = s[lang] || s.pt; return {name: s.name, tag: c.tag, desc: c.desc, addr: s.addr, when: c.when, url: s.url, figs: s.pics.map((fn, k) => ({svg: fn(c.caps[k]), cap: c.caps[k]}))}; }
+  const pics = i.pics || [], caps = i.caps || [];
+  return {name: i.name || "", tag: i.tag || "", desc: i.desc || i.note || "", addr: i.addr || "", when: i.when || "", url: i.url || "",
+    figs: [0, 1, 2].map(k => pics[k] ? {img: pics[k], cap: caps[k] || ""} : {svg: BLANK[k](caps[k] || i.name || ""), cap: caps[k] || ""})};
+}
+function figure(f, name){
+  const el = h("figure", {class: "pic"});
+  if (f.img) el.append(h("img", {src: f.img, alt: f.cap || name, loading: "lazy"})); else el.innerHTML = f.svg;
+  if (f.cap) el.append(h("figcaption", null, f.cap));
+  return el;
+}
+function paintSugs(){
+  const box = $("sugs"); if (!box) return;
+  const W = !S.readOnly, adm = isAdmin(), tl = tally();
+  const docs = S.ideas.filter(i => i.accepted || (adm && SUG[i.slug])).sort((a,b) => (SUG[a.slug] ? 0 : 1) - (SUG[b.slug] ? 0 : 1) || (a.at || 0) - (b.at || 0));
+  const parts = [];
+  if (docs.length) parts.push(h("section", {class: "sugs"},
+    h("div", {class: "sugs-head"}, h("h2", null, t("sug_h")), h("p", {class: "hint"}, (adm ? t("sug_p_admin") : t("sug_p_member")) + " " + t("sug_note"))),
+    h("div", {class: "sug-grid"}, docs.map(i => {
+      const c = contentOf(i), app = !!SUG[i.slug], ref = S.db.doc("ideas/" + i.id);
+      const n = (tl[i.id] || []).length, on = myVote() === i.id;
+      const actions = [];
+      if (i.accepted){
+        const vote = h("button", {class: "heart", type: "button", "aria-pressed": String(on), onclick: () => castVote(i.id)}, (on ? "♥ " + t("my_vote") : "♡ " + t("vote_this")) + (n ? " · " + n : ""));
+        vote.disabled = !W;
+        actions.push(vote, W && h("button", {class: "btn small", type: "button", onclick: () => openVisitForm(null, ideaPrefill(i))}, t("schedule_this")),
+          adm && W && !app && h("button", {class: "textbtn", type: "button", onclick: () => openOptionForm(i)}, t("edit")),
+          adm && W && h("button", {class: "textbtn", type: "button", onclick: () => save(ref.update({accepted: false}))}, t("withdraw")));
+      } else if (adm && W){
+        actions.push(h("button", {class: "btn", type: "button", onclick: () => save(ref.update({accepted: true}))}, t("accept")),
+          confirmBtn(t("dismiss"), "textbtn", () => save(ref.delete())));
+      }
+      return h("article", {class: "sug"}, h("div", {class: "sug-pics"}, c.figs.map(f => figure(f, c.name))),
+        h("div", {class: "sug-body"},
+          (c.tag || adm) && h("div", {class: "sug-status"}, c.tag && h("p", {class: "eyebrow"}, c.tag), adm && h("span", {class: "tag" + (i.accepted ? "" : " wait")}, i.accepted ? t("st_in") : t("st_pending"))),
+          h("h3", null, c.name),
+          c.desc && h("p", {class: "sug-desc"}, c.desc),
+          (c.addr || c.when) && h("dl", {class: "facts"}, c.addr && [h("dt", null, t("where")), h("dd", null, c.addr)], c.when && [h("dt", null, t("when")), h("dd", null, c.when)]),
+          h("div", {class: "links"},
+            h("a", {href: "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(c.name + (c.addr ? ", " + c.addr : ", Portugal")), target: "_blank", rel: "noopener noreferrer"}, t("map") + " ↗"),
+            c.url && h("a", {href: c.url, target: "_blank", rel: "noopener noreferrer"}, t("site") + " ↗")),
+          h("div", {class: "sug-actions"}, actions)));
+    }))));
+  parts.push(pollPanel(tl));
+  box.replaceChildren(...parts);
+}
+
+/* the admin's own options: same fields as the app's suggestions, photos cropped square and kept small */
+function square(src, size){
+  const w = src.naturalWidth || src.width, hh = src.naturalHeight || src.height, m = Math.min(w, hh);
+  const c = document.createElement("canvas"); c.width = c.height = size;
+  c.getContext("2d").drawImage(src, (w - m) / 2, (hh - m) / 2, m, m, 0, 0, size, size); return c;
+}
+function paintOptPics(){
+  $("o-pics").replaceChildren(...[0, 1, 2].map(k => {
+    const has = !!S.opt.pics[k];
+    const cap = h("input", {type: "text", id: "o-cap-" + k, maxlength: "60", placeholder: t("o_cap"), "aria-label": t("o_cap") + " " + (k + 1)});
+    cap.value = S.opt.caps[k] || ""; cap.addEventListener("input", () => { S.opt.caps[k] = cap.value; });
+    return h("div", {class: "slot"}, figure(has ? {img: S.opt.pics[k], cap: ""} : {svg: BLANK[k](""), cap: ""}, ""), cap,
+      h("div", {class: "slot-btns"},
+        h("button", {class: "textbtn", type: "button", onclick: () => { S.opt.slot = k; $("o-file").click(); }}, t("choose")),
+        has && h("button", {class: "textbtn", type: "button", onclick: () => { S.opt.pics[k] = ""; paintOptPics(); }}, t("remove"))));
+  }));
+}
+function openOptionForm(i){
+  S.opt = {id: i ? i.id : null, pics: [0, 1, 2].map(k => (i && i.pics && i.pics[k]) || ""), caps: [0, 1, 2].map(k => (i && i.caps && i.caps[k]) || ""), slot: 0};
+  $("opt-dlg-title").textContent = i ? t("o_title_edit") : t("o_title_new");
+  $("o-name").value = i ? i.name || "" : ""; $("o-tag").value = i ? i.tag || "" : ""; $("o-desc").value = i ? i.desc || i.note || "" : "";
+  $("o-addr").value = i ? i.addr || "" : ""; $("o-when").value = i ? i.when || "" : ""; $("o-url").value = i ? i.url || "" : "";
+  paintOptPics(); $("opt-dlg").showModal();
+}
+$("o-file").addEventListener("change", async e => {
+  const f = e.target.files[0]; e.target.value = ""; if (!f) return;
+  let src;
+  try { src = await loadImage(f); } catch (err){ return toast(t("photo_bad", {name: f.name})); }
+  const c = square(src, 480); let q = 0.74, url = c.toDataURL("image/jpeg", q);
+  while (url.length > 70000 && q > 0.4){ q -= 0.1; url = c.toDataURL("image/jpeg", q); }
+  if (url.length > 70000) url = square(src, 320).toDataURL("image/jpeg", 0.6);
+  S.opt.pics[S.opt.slot] = url; paintOptPics();
+});
+$("opt-cancel").addEventListener("click", () => $("opt-dlg").close());
+$("opt-form").addEventListener("submit", async e => {
+  e.preventDefault(); if (!S.db) return;
+  let url = $("o-url").value.trim(); if (url && !/^https?:\/\//i.test(url)) url = "https://" + url;
+  const data = {name: $("o-name").value.trim(), tag: $("o-tag").value.trim(), desc: $("o-desc").value.trim(), addr: $("o-addr").value.trim(), when: $("o-when").value.trim(), url,
+    pics: S.opt.pics.slice(0, 3), caps: S.opt.caps.slice(0, 3).map(x => String(x || "").trim())};
+  if (!data.name) return;
+  const btn = $("opt-save"); btn.disabled = true;
+  const ok = S.opt.id ? await save(S.db.doc("ideas/" + S.opt.id).update(data))
+                      : await save(S.db.collection("ideas").doc().set({...data, by: S.key, at: Date.now(), accepted: true}));
+  btn.disabled = false;
+  if (ok) $("opt-dlg").close();
+});
+
+function paintAdmin(){
+  const box = $("admin"); if (!box) return;
+  const show = S.ready && !S.unavailable && !S.readOnly && isAdmin();
+  box.hidden = !show;
+  if (!show){ box.replaceChildren(); return; }
+  const keys = [...new Set([S.key, ...Object.keys(S.people), ...Object.keys(S.admins).filter(k => S.admins[k])])];
+  want(keys);
+  box.replaceChildren(h("section", {class: "sec"},
+    h("div", {class: "group"}, h("h2", null, t("admin_h")), h("p", {class: "hint"}, t("admin_p"))),
+    h("ul", {class: "admins"}, keys.map(k => {
+      const on = !!S.admins[k], owner = k === S.key && S.isOwner;
+      return h("li", {class: "who-line"},
+        h("span", {class: "chip"}, avatar(k), nameOf(k) + (k === S.key ? " (" + t("you") + ")" : "")),
+        owner ? h("span", {class: "tag"}, t("owner_tag")) : on ? h("span", {class: "tag"}, t("admin_tag")) : null,
+        !owner && h("button", {class: "textbtn", type: "button", onclick: () => save(S.db.doc("config/admins").set({keys: {...S.admins, [k]: !on}}))}, on ? t("unmake_admin") : t("make_admin")));
+    }))));
+}
+
+function render(){
+  S.sig = sig();
+  applyI18n(); paintNotice(true); paintMe(); paintAdmin();
+  const m = $("main"); m.replaceChildren();
+  if (S.unavailable){ setDetail(null); m.append(blankTicket(t("signin_h"), t("signin_p"))); return; }
+  if (S.view === "visits"){ setDetail(null); m.append(visitsView()); return; }
+  const v = currentVisit();
+  if (!v){
+    setDetail(null);
+    m.append(S.view === "visit" && S.ready
+      ? blankTicket(t("not_found_h"), t("not_found_p"), [h("button", {class: "btn", type: "button", onclick: () => go("visits")}, t("all_visits"))])
+      : noNext());
+    if (S.view === "next"){ m.append(h("div", {id: "sugs"}), ideasView()); paintSugs(); paintIdeas(); }
+    return;
+  }
+  setDetail(v.id);
+  m.append(detailShell());
+  paintTicket(); paintPrep(); paintPhotos(); paintComments(); paintUpNext();
+}
+function repaint(){
+  if (sig() !== S.sig) return render();
+  paintNotice(); paintMe(); paintAdmin();
+  if (S.view === "visits"){ const m = $("main"); m.replaceChildren(visitsView()); return; }
+  paintSugs(); paintIdeas();
+  paintTicket(); paintPrep(); paintPhotos(); paintComments(); paintUpNext();
+}
+
+/* visit form */
+function openVisitForm(v, pre){
+  pre = pre || {};
+  S.form = {id: v ? v.id : null, fromIdea: pre.fromIdea || null};
+  $("visit-dlg-title").textContent = v ? t("edit_visit") : pre.past ? t("add_past") : t("new_visit");
+  const last = sorted().slice(-1)[0];
+  $("f-museum").value = v ? v.museum || "" : pre.museum || "";
+  $("f-date").value = v ? (v.tbc ? "" : v.date || "") : pre.date || "";
+  $("f-time").value = v ? v.time || "" : (last && last.time) || "";
+  $("f-meet").value = v ? v.meet || "" : "";
+  $("f-url").value = v ? v.url || "" : pre.url || "";
+  $("f-notes").value = v ? v.notes || "" : pre.notes || "";
+  const slot = $("visit-delete-slot"); slot.replaceChildren();
+  if (v && S.detailId === v.id) slot.append(confirmBtn(t("del_visit"), "btn ghost danger", async () => {
+    const id = v.id, subs = S.sub;
+    $("visit-dlg").close();
+    for (const k of ["prep", "photos", "comments"]) for (const d of subs[k]){
+      await S.db.doc("visits/" + id + "/" + k + "/" + d.id).delete().catch(() => {});
+      if (k === "photos" && d.asset && S.assets) S.assets.delete(d.asset).catch(() => {});
+    }
+    if (await save(S.db.doc("visits/" + id).delete())) go("visits");
+  }));
+  $("visit-dlg").showModal();
+}
+$("visit-form").addEventListener("submit", async e => {
+  e.preventDefault();
+  if (!S.db || !S.form) return;
+  let url = $("f-url").value.trim();
+  if (url && !/^https?:\/\//i.test(url)) url = "https://" + url;
+  const data = {museum: $("f-museum").value.trim(), date: $("f-date").value, time: $("f-time").value, meet: $("f-meet").value.trim(), url, notes: $("f-notes").value.trim(), tbc: false};
+  if (!data.museum || !data.date) return;
+  const btn = $("visit-save"); btn.disabled = true;
+  let id = S.form.id, ok;
+  if (id) ok = await save(S.db.doc("visits/" + id).update(data));
+  else { const ref = S.db.collection("visits").doc(); id = ref.id; ok = await save(ref.set({...data, attendance: {}, by: S.key, at: Date.now()})); }
+  btn.disabled = false;
+  if (!ok) return;
+  if (S.form.fromIdea){
+    S.db.doc("ideas/" + S.form.fromIdea).delete().catch(() => {});
+    for (const k of Object.keys(S.ballots)) S.db.doc("ballots/" + k).delete().catch(() => {}); /* decided: next round starts clean */
+  }
+  $("visit-dlg").close();
+  if (!S.form.id) go("visit", id);
+});
+$("visit-cancel").addEventListener("click", () => $("visit-dlg").close());
+$("name-cancel").addEventListener("click", () => $("name-dlg").close());
+$("me-btn").addEventListener("click", () => { $("f-nick").value = myName(); $("name-dlg").showModal(); });
+$("name-form").addEventListener("submit", async e => { e.preventDefault(); if (await saveNick($("f-nick").value)) $("name-dlg").close(); });
+document.querySelectorAll("dialog").forEach(d => d.addEventListener("click", e => { if (e.target === d) d.close(); }));
+$("lightbox").addEventListener("keydown", e => {
+  if (e.key !== "ArrowLeft" && e.key !== "ArrowRight") return;
+  const n = S.sub.photos.length; if (n < 2) return;
+  S.lb = (S.lb + (e.key === "ArrowLeft" ? -1 : 1) + n) % n; paintLightbox();
+});
+$("photo-input").addEventListener("change", e => { const files = [...e.target.files]; e.target.value = ""; uploadPhotos(files); });
+document.querySelectorAll("#tabs button").forEach(b => b.addEventListener("click", () => go(b.dataset.view)));
+const setLang = l => { lang = l; LS.set("mv.lang", l); render(); };
+$("lang-pt").addEventListener("click", () => setLang("pt"));
+$("lang-en").addEventListener("click", () => setLang("en"));
+window.addEventListener("hashchange", () => { readHash(); render(); });
+
+/* boot */
+function guestKey(){
+  let k = LS.get("mv.guest");
+  if (!k){ k = "g_" + Math.random().toString(36).slice(2, 12) + Date.now().toString(36); LS.set("mv.guest", k); }
+  return k;
+}
+/* demonstration only: an in-memory stand-in for the shared store, so the page works as a single file */
+function demoClaude(){
+  const store = new Map(), subs = []; let n = 0;
+  const merge = (a, b) => { for (const k in b){ if (b[k] && typeof b[k] === "object" && !Array.isArray(b[k]) && a[k] && typeof a[k] === "object" && !Array.isArray(a[k])) merge(a[k], b[k]); else a[k] = b[k]; } return a; };
+  const clone = d => JSON.parse(JSON.stringify(d));
+  const docSnap = p => ({id: p.split("/").pop(), exists: store.has(p), data: () => store.has(p) ? clone(store.get(p)) : undefined});
+  const colSnap = p => ({docs: [...store.keys()].filter(k => k.startsWith(p + "/") && !k.slice(p.length + 1).includes("/")).map(docSnap)});
+  const fire = () => subs.slice().forEach(s => s.cb(s.one ? docSnap(s.p) : colSnap(s.p)));
+  const listen = (p, one) => cb => { const s = {p, cb, one}; subs.push(s); setTimeout(() => { if (subs.includes(s)) cb(one ? docSnap(p) : colSnap(p)); }, 0); return () => { const i = subs.indexOf(s); if (i >= 0) subs.splice(i, 1); }; };
+  const doc = p => ({id: p.split("/").pop(), path: p, onSnapshot: listen(p, true),
+    set: async d => { store.set(p, clone(d)); fire(); },
+    update: async d => { if (!store.has(p)) throw {code: "invalid_argument"}; merge(store.get(p), clone(d)); fire(); },
+    delete: async () => { store.delete(p); fire(); }});
+  const collection = p => ({path: p, doc: id => doc(p + "/" + (id || "d" + (++n) + Date.now().toString(36))), onSnapshot: listen(p, false)});
+  store.set("visits/gulbenkian", {museum: "Museu Calouste Gulbenkian", date: "2026-09-26", time: "", meet: "", url: "https://gulbenkian.pt/museu/", notes: "", tbc: true, attendance: {}, at: 1});
+  store.set("ideas/sug-maat", {name: "MAAT", slug: "maat", at: 1, accepted: true});
+  store.set("ideas/sug-tesouro", {name: "Museu do Tesouro Real", slug: "tesouro", at: 2, accepted: true});
+  store.set("ideas/sug-paularego", {name: "Casa das Histórias Paula Rego", slug: "paularego", at: 3});
+  const user = {me: async () => ({id: "u_demo", name: "", color: "", canEdit: true, isOwner: true}), can: async () => true, profiles: async () => ({})};
+  return {use: async k => k === "db" ? {doc, collection} : k === "user" ? user : null};
+}
+async function boot(){
+  readHash(); render();
+  const claude = demoClaude();
+  if (!claude || typeof claude.use !== "function"){ S.ready = true; S.unavailable = true; return render(); }
+  const [db, user] = await Promise.all([claude.use("db"), claude.use("user")]);
+  const assets = null; /* photos are kept in the shared store, sized for the screen */
+  if (!db){ S.ready = true; S.unavailable = true; return render(); }
+  S.db = db; S.user = user; S.assets = assets;
+  if (user){
+    const me = await user.me();
+    S.uid = me.id; S.canEdit = !!me.canEdit; S.isOwner = !!me.isOwner; S.canWrite = await user.can("data.write");
+    if (me.id){ S.profiles[me.id] = {name: "", color: me.color}; S.asked[me.id] = 1; }
+  }
+  S.key = S.uid || guestKey();
+  S.readOnly = S.canWrite === false && !S.canEdit;
+  const fail = e => { if (e && (e.code === "revoked" || e.code === "not_granted")){ S.unavailable = true; render(); } };
+  db.collection("visits").onSnapshot(s => { S.visits = s.docs.map(d => ({id: d.id, ...d.data()})); S.ready = true; repaint(); }, fail);
+  db.collection("ideas").onSnapshot(s => { S.ideas = s.docs.map(d => ({id: d.id, ...d.data()})); paintSugs(); paintIdeas(); }, fail);
+  db.doc("config/admins").onSnapshot(d => { S.admins = (d.exists && d.data().keys) || {}; repaint(); }, fail);
+  db.collection("ballots").onSnapshot(s => { S.ballots = {}; s.docs.forEach(d => { S.ballots[d.id] = d.data(); }); paintSugs(); paintIdeas(); }, fail);
+  db.collection("people").onSnapshot(s => { S.people = {}; s.docs.forEach(d => { S.people[d.id] = d.data(); }); repaint(); }, fail);
+}
+boot();
+})();
+</script>
+
+</body>
+</html>
