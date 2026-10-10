@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Girls go to the Museum</title>
-<meta name="description" content="Demonstração da página do grupo para as visitas aos museus da Grande Lisboa.">
+<title>Às quintas no Museu</title>
+<meta name="description" content="Demonstração da página do grupo para as visitas mensais aos museus da Grande Lisboa.">
 <meta name="robots" content="noindex">
-<meta property="og:title" content="Girls go to the Museum">
+<meta property="og:title" content="Às quintas no Museu">
 <meta property="og:description" content="Demonstração: sugestões, votação e diário das visitas aos museus da Grande Lisboa.">
 <meta property="og:type" content="website">
 <style>:root{color-scheme:light}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
@@ -276,8 +276,8 @@ dialog::backdrop{background:var(--scrim)}
     <div class="brand">
       <span class="brand-mark" aria-hidden="true">♥</span>
       <span class="brand-text">
-        <span class="brand-name" data-i="brand">Girls go to the Museum</span>
-        <span class="brand-sub" data-i="brand_sub">Grande Lisboa, de duas em duas semanas</span>
+        <span class="brand-name" data-i="brand">Às quintas no Museu</span>
+        <span class="brand-sub" data-i="brand_sub">Grande Lisboa, uma vez por mês</span>
       </span>
     </div>
     <div class="top-tools">
@@ -306,7 +306,7 @@ dialog::backdrop{background:var(--scrim)}
       <input type="text" id="f-museum" list="museus" required maxlength="120" autocomplete="off">
     </div>
     <div class="pair">
-      <div class="field"><label for="f-date" data-i="f_date">Data</label><input type="date" id="f-date" required></div>
+      <div class="field"><label for="f-date" data-i="f_date">Data</label><input type="date" id="f-date" required><small id="f-date-hint"></small></div>
       <div class="field"><label for="f-time" data-i="f_time">Hora</label><input type="time" id="f-time"></div>
     </div>
     <div class="field">
@@ -421,7 +421,8 @@ dialog::backdrop{background:var(--scrim)}
 "use strict";
 const T = {
 pt: {
-  brand:"Girls go to the Museum", brand_sub:"Grande Lisboa, de duas em duas semanas", demo:"Demonstração: podes experimentar tudo. Nada fica guardado e mais ninguém vê.",
+  demo:"Demonstração: podes experimentar tudo. Nada fica guardado e mais ninguém vê.",
+  brand:"Às quintas no Museu", brand_sub:"Grande Lisboa, uma vez por mês",
   tab_next:"Próxima visita", tab_visits:"Todas as visitas", tab_ideas:"Votação",
   f_museum:"Museu", f_date:"Data", f_time:"Hora", f_meet:"Ponto de encontro", f_url:"Site do museu ou da exposição", f_notes:"O que vamos ver",
   cancel:"Cancelar", save:"Guardar", add:"Adicionar", del:"Apagar", confirm:"Apagar mesmo?", edit:"Editar", close:"Fechar",
@@ -432,7 +433,8 @@ pt: {
   signin_h:"Inicia sessão para ver as visitas", signin_p:"As visitas, os comentários e as fotografias do grupo aparecem aqui depois de abrires a página com a tua conta Claude.",
   loading:"A carregar as visitas…",
   none_h:"Ainda não há visita marcada", none_p:"Escolham o museu e a data. Depois, cada pessoa confirma aqui a presença, e a página fica com a preparação, os comentários e as fotografias.",
-  none_rhythm:"A última visita foi a {last}. Duas semanas depois calha a {next}.",
+  none_rhythm:"A última visita foi a {last}. Sugestão para a próxima: {next}.",
+  thu_hint:"As visitas são à quinta-feira.", not_thu:"Atenção: esta data não é uma quinta-feira.",
   schedule:"Marcar visita", schedule_for:"Marcar para {date}", schedule_first:"Marcar a primeira visita", edit_visit:"Editar visita", del_visit:"Apagar visita",
   ey_next:"Próxima visita", ey_planned:"Visita marcada", ey_done:"Visita realizada",
   today:"hoje", tomorrow:"amanhã", yesterday:"ontem", in_days:"daqui a {n} dias", days_ago:"há {n} dias",
@@ -457,7 +459,7 @@ pt: {
   someone:"Alguém", you:"tu",
   err_save:"Não ficou guardado. Tenta outra vez.", err_quota:"A página atingiu o limite de armazenamento. Apaga fotografias antigas para libertar espaço.", err_access:"O teu acesso a esta página mudou. Recarrega a página.",
   saved:"Guardado", new_visit:"Marcar visita",
-  date_tbc:"data por confirmar", add_past:"Registar visita já feita", rhythm:"de duas em duas semanas",
+  date_tbc:"data por confirmar", add_past:"Registar visita já feita", rhythm:"uma vez por mês",
   sug_h:"Sugestões para a próxima visita", sug_p_admin:"Aceita as que quiseres pôr a votos.", sug_p_member:"Vejam e votem na que preferirem.",
   sug_note:"Os horários foram vistos a 10 de outubro de 2026; confirmem no site antes de ir. As imagens são ilustrações, as fotografias estão no site de cada museu.",
   accept:"Aceitar para a votação", dismiss:"Dispensar", withdraw:"Retirar da votação", st_in:"Na votação", st_pending:"Por aceitar",
@@ -475,7 +477,8 @@ pt: {
   poll_none:"Ainda ninguém votou.", poll_count1:"1 pessoa votou", poll_count:"{n} pessoas votaram", schedule_winner:"Marcar a mais votada"
 },
 en: {
-  brand:"Girls go to the Museum", brand_sub:"Greater Lisbon, every two weeks", demo:"Demo: try anything. Nothing is saved and nobody else sees it.",
+  demo:"Demo: try anything. Nothing is saved and nobody else sees it.",
+  brand:"Às quintas no Museu", brand_sub:"Greater Lisbon, once a month",
   tab_next:"Next visit", tab_visits:"All visits", tab_ideas:"Vote",
   f_museum:"Museum", f_date:"Date", f_time:"Time", f_meet:"Meeting point", f_url:"Museum or exhibition website", f_notes:"What we are going to see",
   cancel:"Cancel", save:"Save", add:"Add", del:"Delete", confirm:"Really delete?", edit:"Edit", close:"Close",
@@ -486,7 +489,8 @@ en: {
   signin_h:"Sign in to see the visits", signin_p:"The group's visits, comments and photos appear here once you open the page with your Claude account.",
   loading:"Loading visits…",
   none_h:"No visit scheduled yet", none_p:"Pick the museum and the date. Then everyone confirms here, and the page keeps the preparation, comments and photos.",
-  none_rhythm:"The last visit was on {last}. Two weeks later is {next}.",
+  none_rhythm:"The last visit was on {last}. Suggested next date: {next}.",
+  thu_hint:"Visits are on Thursdays.", not_thu:"Note: this date is not a Thursday.",
   schedule:"Schedule a visit", schedule_for:"Schedule for {date}", schedule_first:"Schedule the first visit", edit_visit:"Edit visit", del_visit:"Delete visit",
   ey_next:"Next visit", ey_planned:"Scheduled visit", ey_done:"Past visit",
   today:"today", tomorrow:"tomorrow", yesterday:"yesterday", in_days:"in {n} days", days_ago:"{n} days ago",
@@ -511,7 +515,7 @@ en: {
   someone:"Someone", you:"you",
   err_save:"That was not saved. Try again.", err_quota:"This page has reached its storage limit. Delete older photos to free space.", err_access:"Your access to this page changed. Reload the page.",
   saved:"Saved", new_visit:"Schedule a visit",
-  date_tbc:"date to confirm", add_past:"Add a visit already made", rhythm:"every two weeks",
+  date_tbc:"date to confirm", add_past:"Add a visit already made", rhythm:"once a month",
   sug_h:"Suggestions for the next visit", sug_p_admin:"Accept the ones you want to put to the vote.", sug_p_member:"Have a look and vote for your favourite.",
   sug_note:"Opening hours were checked on 10 October 2026; confirm on the website before going. The images are illustrations, the photos are on each museum's website.",
   accept:"Accept for the vote", dismiss:"Dismiss", withdraw:"Remove from the vote", st_in:"In the vote", st_pending:"Awaiting approval",
@@ -654,12 +658,15 @@ const upcoming = () => sorted().filter(v => v.date >= today());
 const past = () => sorted().filter(v => v.date < today()).reverse();
 const nextVisit = () => upcoming()[0] || null;
 const dated = () => sorted().filter(v => !v.tbc);
+/* once a month, on a Thursday: four weeks after the last visit, moved on to the next Thursday still ahead */
+const toThursday = s => { const d = parse(s); d.setDate(d.getDate() + ((4 - d.getDay() + 7) % 7)); return ymd(d); };
 function suggestDate(){
-  const all = dated(); if (!all.length) return "";
-  let d = addDays(all[all.length-1].date, 14);
-  while (d <= today()) d = addDays(d, 14);
+  const all = dated();
+  let d = toThursday(all.length ? addDays(all[all.length-1].date, 28) : addDays(today(), 1));
+  while (d <= today()) d = addDays(d, 7);
   return d;
 }
+function dateHint(){ const v = $("f-date").value, el = $("f-date-hint"); if (el) el.textContent = v && parse(v).getDay() !== 4 ? t("not_thu") : t("thu_hint"); }
 function currentVisit(){
   if (S.view === "visit") return S.visits.find(v => v.id === S.visitId) || null;
   if (S.view === "next") return nextVisit();
@@ -1237,6 +1244,7 @@ function openVisitForm(v, pre){
   const last = sorted().slice(-1)[0];
   $("f-museum").value = v ? v.museum || "" : pre.museum || "";
   $("f-date").value = v ? (v.tbc ? "" : v.date || "") : pre.date || "";
+  dateHint();
   $("f-time").value = v ? v.time || "" : (last && last.time) || "";
   $("f-meet").value = v ? v.meet || "" : "";
   $("f-url").value = v ? v.url || "" : pre.url || "";
@@ -1274,6 +1282,7 @@ $("visit-form").addEventListener("submit", async e => {
   if (!S.form.id) go("visit", id);
 });
 $("visit-cancel").addEventListener("click", () => $("visit-dlg").close());
+$("f-date").addEventListener("input", dateHint);
 $("name-cancel").addEventListener("click", () => $("name-dlg").close());
 $("me-btn").addEventListener("click", () => { $("f-nick").value = myName(); $("name-dlg").showModal(); });
 $("name-form").addEventListener("submit", async e => { e.preventDefault(); if (await saveNick($("f-nick").value)) $("name-dlg").close(); });
